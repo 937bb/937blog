@@ -59,7 +59,7 @@ code_word_wrap: false
 copy:
   enable: true
   copyright:
-    enable: false
+    enable: true
     limit_count: 50
 
 # social settings (社交图标设置)
@@ -181,7 +181,7 @@ post_meta:
     date_format: date # date/relative/simple 显示日期还是相对日期 或者 简单日期
     categories: true # true or false 主页是否显示分类
     tags: true # true or false 主页是否显示标籤
-    label: false # true or false 显示描述性文字
+    label: true # true or false 显示描述性文字
   post:
     date_type: created # created or updated or both 文章页日期是创建日或者更新日或都显示
     date_format: date # date/relative 显示日期还是相对日期
@@ -319,9 +319,9 @@ comments:
   text: false # Display the comment name next to the button
   # lazyload: The comment system will be load when comment element enters the browser's viewport.
   # If you set it to true, the comment count will be invalid
-  lazyload: true # 中文：评论系统会在浏览器窗口进入时加载
+  lazyload: false # 中文：评论系统会在浏览器窗口进入时加载
   count: true # 中文：显示评论数
-  card_post_count: true # Display comment count in Home Page 中文：在首页显示评论数
+  card_post_count: false # Display comment count in Home Page 中文：在首页显示评论数
 
 # valine
 # https://valine.js.org
@@ -1222,7 +1222,7 @@ agreementPopup:
 
 # 右键菜单
 rightClickMenu:
-  enable: false
+  enable: true
 
 # 首页随便逛逛people模式 而非技能点模式，关闭后为技能点模式需要配置creativity.yml
 peoplecanvas:
