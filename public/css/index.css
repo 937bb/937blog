@@ -239,6 +239,7 @@ template {
 .article-sort-item-title,
 #recent-posts > .recent-post-item >.recent-post-info > .content,
 #aside-content .aside-list > .aside-list-item .content > .name,
+#aside-content .aside-list > .aside-list-item .content > .userName,
 #aside-content .aside-list > .aside-list-item .content > .title,
 #aside-content .aside-list > .aside-list-item .content > .comment,
 #post-info .post-title,
@@ -9191,7 +9192,7 @@ h1.page-title + .tag-cloud-list {
   position: relative;
   overflow: hidden;
   margin-top: 20px;
-  padding: 20px 24px;
+  padding: 20px 14px;
 }
 #aside-content .card-widget .author-info__bottom-group {
   display: -webkit-box;
@@ -19978,6 +19979,7 @@ body .snackbar-container::after {
   color: var(--anzhiyu-main);
   cursor: pointer;
 }
+
 #twikoo .tk-comments .tk-icon.__comments {
   color: var(--anzhiyu-main);
 }
@@ -20024,6 +20026,7 @@ a
   border-radius: 0.3em;
 }
 @media screen and (max-width: 768px) {
+
   #twikoo .tk-comments-container .tk-comment {
     padding: 1rem;
     border: var(--style-border-always);
@@ -20243,6 +20246,7 @@ a
   max-height: 500px;
 }
 .tk-comments .tk-row-actions-start {
+  display: none;
   position: absolute;
   top: -84px;
   left: 17px;
@@ -20252,6 +20256,7 @@ a
     min-width: 260px;
   }
   .tk-comments .tk-row-actions-start {
+    display: none;
     top: -176px;
   }
   #twikoo .tk-comments .tk-submit .el-button--primary {
@@ -20279,6 +20284,7 @@ a
     width: 100%;
   }
   .tk-comments .tk-row-actions-start {
+    display: none;
     position: absolute;
   }
 }
@@ -22066,16 +22072,26 @@ details .content > *:nth-child(1) {
 #console .aside-list-item .content {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   margin-top: 0.5rem;
+}
+#card-newest-comments .aside-list-item .comment {
+}
+#card-newest-comments .aside-list-item .comment .userName {  
+  font-size: 12px !important;
+  color:red !important;
 }
 
 #card-newest-comments .aside-list-item:hover {
   background: var(--anzhiyu-main);
   color: var(--anzhiyu-white);
 }
+#card-newest-comments .aside-list-item:hover .comment .userName {
+  color: var(--anzhiyu-white) !important;
+}
 
-#console .aside-list-item .content .comment {
+#console .aside-list-item .comment{
   -webkit-line-clamp: 2;
   display: -webkit-box;
   overflow: hidden;

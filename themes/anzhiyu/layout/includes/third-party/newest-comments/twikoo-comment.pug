@@ -36,7 +36,9 @@ script.
           generateHtml(twikooArray)
         }).catch(function (err) {
           const $dom = document.querySelector('#card-newest-comments .aside-list')
+          const $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
           $dom.textContent= "!{_p('aside.card_newest_comments.error')}"
+          $dom2.textContent= "!{_p('aside.card_newest_comments.error')}"
         })
       }
 
@@ -47,7 +49,7 @@ script.
       }
     }
 
-    const generateHtml = array => {
+    const generateHtml2 = array => {
       let result = ''
 
       if (array.length) {
@@ -58,12 +60,45 @@ script.
             const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
             result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
           }
-          
+
           result += `<div class='content'>
           <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
           <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
           </div>`
         }
+      } else {
+        result += '!{_p("aside.card_newest_comments.zero")}'
+      }
+
+      let $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+      $dom2 && ($dom2.innerHTML= result)
+      window.lazyLoadInstance && window.lazyLoadInstance.update()
+      window.pjax && window.pjax.refresh($dom2)
+    }
+
+      const generateHtml = array => {
+      let result = ''
+
+      if (array.length) {
+        for (let i = 0; i < array.length; i++) {
+          result += '<div class=\'aside-list-item\'>'
+
+          if (!{theme.newest_comments.avatar}) {
+            const name = '!{theme.lazyload.enable ? "data-lazy-src" : "src"}'
+            result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+          }
+
+          result += `          
+          <a  href='${array[i].url}' title='${array[i].content}'>
+          <div class='comment'>
+            <div class='content'>${array[i].content}</div>
+            <div class='userName'>${array[i].nick}</div>
+            </div>
+          </div>
+          </a>`
+        }
+
+          //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>
       } else {
         result += '!{_p("aside.card_newest_comments.zero")}'
       }
@@ -79,6 +114,14 @@ script.
         const data = saveToLocal.get('twikoo-newest-comments')
         if (data) {
           generateHtml(JSON.parse(data))
+        } else {
+          getComment()
+        }
+      }
+      if (document.querySelector('#card-console-newest-comments .aside-list')) {
+        const data = saveToLocal.get('twikoo-newest-comments')
+        if (data) {
+          generateHtml2(JSON.parse(data))
         } else {
           getComment()
         }
