@@ -102,3 +102,8 @@ theme: anzhiyu
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ""
+
+
+aplayer:
+  meting: false
+  asset_inject: true

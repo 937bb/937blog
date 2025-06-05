@@ -4,16 +4,16 @@ menu:
     分类: /categories/ || anzhiyu-icon-shapes
     标签: /tags/ || anzhiyu-icon-tags
 
-  友链:
-    友人帐: /link/ || anzhiyu-icon-link
-    朋友圈: /fcircle/ || anzhiyu-icon-artstation
-    留言板: /comments/ || anzhiyu-icon-envelope
+  友链: /link/ || anzhiyu-icon-link
+    # 友人帐: /link/ || anzhiyu-icon-link
+    # 朋友圈: /fcircle/ || anzhiyu-icon-artstation
+    # 留言板: /comments/ || anzhiyu-icon-envelope
 
-  我的:
-    音乐馆: /music/ || anzhiyu-icon-music
-    追番页: /bangumis/ || anzhiyu-icon-bilibili
-    相册集: /album/ || anzhiyu-icon-images
-    小空调: /air-conditioner/ || anzhiyu-icon-fan
+  音乐馆: /music/ || anzhiyu-icon-music
+    # 音乐馆: /music/ || anzhiyu-icon-music
+    # 追番页: /bangumis/ || anzhiyu-icon-bilibili
+    # 相册集: /album/ || anzhiyu-icon-images
+    # 小空调: /air-conditioner/ || anzhiyu-icon-fan
 
   关于:
     关于本人: /about/ || anzhiyu-icon-paper-plane
@@ -183,7 +183,7 @@ post_meta:
     tags: true # true or false 主页是否显示标籤
     label: true # true or false 显示描述性文字
   post:
-    date_type: created # created or updated or both 文章页日期是创建日或者更新日或都显示
+    date_type: both # created or updated or both 文章页日期是创建日或者更新日或都显示
     date_format: date # date/relative 显示日期还是相对日期
     categories: true # true or false 文章页是否显示分类
     tags: true # true or false 文章页是否显示标籤
@@ -297,10 +297,10 @@ noticeOutdate:
 # Share System (分享功能)
 # --------------------------------------
 
-# Share.js
+# Share.js // 文章分享
 # https://github.com/overtrue/share.js
 sharejs:
-  enable: true
+  enable: false
   sites: facebook,twitter,wechat,weibo,qq
 
 # AddToAny
@@ -620,9 +620,9 @@ site_verification:
 theme_color:
   enable: true
   main: "#425AEF"
-  dark_main: "#f2b94b"
+  dark_main: "#F08000"
   paginator: "#425AEF"
-  #   button_hover: "#FF7242"
+  button_hover: "#FF7242"
   text_selection: "#2128bd"
   link_color: "var(--anzhiyu-fontcolor)"
   meta_color: "var(--anzhiyu-fontcolor)"
@@ -836,7 +836,7 @@ aside:
     color: false
     sort_order: # Don't modify the setting unless you know how it works
     highlightTags:
-      # - Hexo
+      - 测试分类
       # - 前端
   card_archives:
     enable: true
@@ -1056,7 +1056,7 @@ home_top:
   subTitle: 大庇天下寒士俱欢颜。
   siteText: blog.937b.cn
   category:
-    - name: 前端
+    - name: 开发
       path: /categories/前端开发/
       shadow: var(--anzhiyu-shadow-blue)
       class: blue
@@ -1077,10 +1077,10 @@ home_top:
     swiper_css: https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css #swiper css依赖
     swiper_js: https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.js #swiper js依赖
   banner:
-    tips: 新品主题
-    title: Theme-AnZhiYu
-    image: https://bu.dusays.com/2023/05/13/645fa3cf90d70.webp
-    link: https://docs.anheyu.com/
+    tips: 让自己简单点
+    title: blog.937b.cn
+    image: /images/bg/pexels1.jpg
+    link: 
 
 # 朋友圈配置
 friends_vue:
@@ -1137,7 +1137,7 @@ nav_music:
   all_playlist: https://y.qq.com/n/ryqq/playlist/8802438608
 
 # 路径为 /music 的音乐页面默认加载的歌单 1. nav_music 2. custom
-music_page_default: nav_music
+music_page_default: custom
 
 # 评论匿名邮箱
 visitorMail:
