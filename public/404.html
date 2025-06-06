@@ -67,7 +67,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2025-06-05 18:23:19',
+  postUpdate: '2025-06-06 10:40:26',
   postMainColor: '',
 }</script><noscript><style type="text/css">
   #nav {
@@ -430,11 +430,14 @@ if (true) {
           result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
         }
 
-        result += `<div class='content'>
-
-        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
-          <div class='userName'>${array[i].nick}</div></div>
-        </div>`
+        result += `          
+        <a  href='${array[i].url}' title='${array[i].content}'>
+        <div class='comment'>
+          <div class='content'>${array[i].content}</div>
+          <div class='userName'>${array[i].nick}</div>
+          </div>
+        </div>
+        </a>`
       }
 
         //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>

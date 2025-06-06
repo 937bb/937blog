@@ -1799,6 +1799,7 @@ document.addEventListener("DOMContentLoaded", function () {
     anzhiyu.getCustomPlayList();
     anzhiyu.addEventListenerConsoleMusicList(false);
     anzhiyu.initPaginationObserver();
+    bb937.setWelcome()
 
     setTimeout(() => {
       setInputFocusListener();

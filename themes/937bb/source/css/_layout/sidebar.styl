@@ -250,6 +250,7 @@ li.card-category-list-item {
   display: -webkit-box;
 }
 #aside-content .aside-list > .aside-list-item {
+  displayf: flex;
   padding: 8px;
   padding-top: 6px !important;
   padding-bottom: 6px !important;
@@ -258,6 +259,26 @@ li.card-category-list-item {
   margin: 6px 0;
   cursor: pointer;
 }
+#card-newest-comments .aside-list-item .comment {
+  height:100%;
+  padding-left: 10px;
+  justify-content: space-between !important;
+  flex-direction: column;
+  display: flex;
+}
+#card-newest-comments .aside-list-item .userName {
+  font-size: 12px;
+  color:rgb(133, 133, 133)  
+}
+#card-newest-comments .aside-list-item .rightc{
+    height: 4.2em;
+    flex: 1;
+    width: 100%;
+}
+#card-newest-comments .aside-list-item .title {
+}
+
+
 @media screen and (min-width: 1200px) {
   #aside-content .aside-list > .aside-list-item:hover {
     transform: scale(1.03);
@@ -269,6 +290,11 @@ li.card-category-list-item {
 #aside-content .aside-list > .aside-list-item:hover .thumbnail > img {
   transform: scale(1);
 }
+
+#aside-content .aside-list > .aside-list-item:hover .userName{
+  color: var(--anzhiyu-white);
+}
+
 #aside-content .aside-list > .aside-list-item:not(:last-child) {
   border-bottom: 0 dashed var(--anzhiyu-background) !important;
 }
@@ -285,9 +311,7 @@ li.card-category-list-item {
 #aside-content .aside-list > .aside-list-item:hover a {
   color: var(--anzhiyu-white) !important;
 }
-.card-widget.card-recent-post {
-  padding: 0.4rem 1rem !important;
-}
+
 
 /* 文章toc */
 #aside-content #card-toc .toc-content .toc-link.active {

@@ -573,11 +573,14 @@ if (typeof gsap === "object") {
           result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
         }
 
-        result += `<div class='content'>
-
-        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
-          <div class='userName'>${array[i].nick}</div></div>
-        </div>`
+        result += `          
+        <a  href='${array[i].url}' title='${array[i].content}'>
+        <div class='comment'>
+          <div class='content'>${array[i].content}</div>
+          <div class='userName'>${array[i].nick}</div>
+          </div>
+        </div>
+        </a>`
       }
 
         //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>

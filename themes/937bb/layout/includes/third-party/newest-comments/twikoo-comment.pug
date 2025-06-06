@@ -89,13 +89,14 @@ script.
           }
 
           result += `          
-          <a  href='${array[i].url}' title='${array[i].content}'>
+          <a  class="rightc"  href='${array[i].url}' title='${array[i].content}'>
           <div class='comment'>
-            <div class='content'>${array[i].content}</div>
-            <div class='userName'>${array[i].nick}</div>
+            <div class='title'>${array[i].content}</div>
+            <div class='userName'>${array[i].nick} - ${anzhiyu.diffDate(array[i].date, true)}</time></div>
             </div>
-          </div>
-          </a>`
+
+          </a>
+          </div>`
         }
 
           //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>
