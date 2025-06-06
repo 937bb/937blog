@@ -273,9 +273,26 @@ li.card-category-list-item {
 #card-newest-comments .aside-list-item .rightc{
     height: 4.2em;
     flex: 1;
-    width: 100%;
+    width: calc(100% - 4.2em);
+    }
+#card-newest-comments .aside-list-item .thumbnail{
+  width: 4.2em;
+  height:4.2em;
+}
+#card-newest-comments .aside-list-item .thumbnail img{
+  width: 4.2em;
+  height:4.2em;
 }
 #card-newest-comments .aside-list-item .title {
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  color: var(--font-color);
+  -webkit-line-clamp: 2;
+  font-weight: 700;
+  font-size: 95%;
 }
 
 
@@ -311,7 +328,9 @@ li.card-category-list-item {
 #aside-content .aside-list > .aside-list-item:hover a {
   color: var(--anzhiyu-white) !important;
 }
-
+#aside-content .aside-list > .aside-list-item:hover .title {
+  color: var(--anzhiyu-white) !important;
+}
 
 /* 文章toc */
 #aside-content #card-toc .toc-content .toc-link.active {

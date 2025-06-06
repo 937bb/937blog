@@ -536,7 +536,7 @@ footer:
       # - link: https://image.anheyu.com
       #   text: 图床
       - link: https://beian.miit.gov.cn/
-        text: 《备案号》
+        text: 鲁ICP备2024128229号-1
     subTitle:
       enable: false
       # Typewriter Effect (打字效果)
@@ -621,10 +621,10 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#425AEF"
+  main: "#F08000"
   dark_main: "#F08000"
-  paginator: "#425AEF"
-  button_hover: "#FF7242"
+  paginator: "#F08000"
+  button_hover: "#F08000"
   text_selection: "#2128bd"
   link_color: "var(--anzhiyu-fontcolor)"
   meta_color: "var(--anzhiyu-fontcolor)"
