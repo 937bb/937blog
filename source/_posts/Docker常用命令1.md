@@ -1,9 +1,9 @@
 ---
-title: Docker常用命令 - 1
+title: Docker常用命令1 - Docker 从零开始入门教程（超详细）
 date: 2025-06-06
-top_img: /images/logo.jpg
-cover: /images/logo.jpg
-categories: ["Docker","教程"]
+top_img: /images/post/docker/docker.jpg
+cover: /images/post/docker/docker.jpg
+categories: ["Docker"]
 tags: ["Docker","教程"]
 ---
 

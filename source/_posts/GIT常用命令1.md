@@ -1,10 +1,10 @@
 ---
-title: GIT常用命令 - 1
+title: GIT常用命令1 - 🧠 Git 使用教程（附公司级协作流程）
 date: 2025-06-06
-top_img: /images/logo.jpg
-cover: /images/logo.jpg
-categories: ["GIT","教程"]
-tags: ["GIT","教程"]
+top_img: /images/post/git/git.jpg
+cover: /images/post/git/git.jpg
+categories: ["GIT"]
+tags: ["教程","GIT"]
 ---
 
 

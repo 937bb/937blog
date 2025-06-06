@@ -1,6 +1,6 @@
 menu:
   文章:
-    隧道: /archives/ || anzhiyu-icon-box-archive
+    总览: /archives/ || anzhiyu-icon-box-archive
     分类: /categories/ || anzhiyu-icon-shapes
     标签: /tags/ || anzhiyu-icon-tags
 
@@ -156,12 +156,12 @@ default_top_img: false
 
 cover:
   # display the cover or not (是否显示文章封面)
-  index_enable: true
-  aside_enable: true
-  archives_enable: true
+  index_enable: true # 首页
+  aside_enable: true # 侧边栏
+  archives_enable: true # 文章归档
   # the position of cover in home page (封面显示的位置)
   # left/right/both
-  position: both
+  position: left
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover:
     - /img/default_cover.jpg
@@ -1064,8 +1064,8 @@ home_top:
   subTitle: 大庇天下寒士俱欢颜。
   siteText: blog.937b.cn
   category:
-    - name: 开发
-      path: /categories/前端开发/
+    - name: 教程
+      path: /tags/教程/
       shadow: var(--anzhiyu-shadow-blue)
       class: blue
       icon: anzhiyu-icon-dove

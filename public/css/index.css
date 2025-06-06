@@ -2797,7 +2797,7 @@ i.anzhiyu-icon-hashtag {
   --anzhiyu-hovertext: #0a84ff;
   --anzhiyu-ahoverbg: #fff;
   --anzhiyu-scrollbar: rgba(200,200,223,0.4);
-  --anzhiyu-lighttext: #4c4948;
+  --anzhiyu-lighttext: #f08000;
   --anzhiyu-secondtext: #a1a2b8;
   --anzhiyu-scrollbar: rgba(200,200,223,0.4);
   --anzhiyu-card-btn-bg: #30343f;
@@ -9508,8 +9508,8 @@ h1.page-title + .tag-cloud-list {
 }
 #aside-content .aside-list > .aside-list-item .thumbnail {
   overflow: hidden;
-  width: 4.2em;
-  height: 4.2em;
+  width: 3.8em;
+  height: 3.8em;
 }
 #aside-content .aside-list > .aside-list-item .content {
   -webkit-box-flex: 1;
@@ -9521,8 +9521,8 @@ h1.page-title + .tag-cloud-list {
   flex: 1;
   padding-left: 10px;
   word-break: break-all;
-  width: 4.2em;
-  height: 4.2em;
+  width: 3.8em;
+  height: 3.8em;
 }
 #aside-content .aside-list > .aside-list-item .content > .name {
   -webkit-line-clamp: 1;
@@ -16062,7 +16062,7 @@ li.card-category-list-item {
   color: #858585;
 }
 #card-newest-comments .aside-list-item .rightc {
-  height: 4.2em;
+  height: 3.8em;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
@@ -16070,15 +16070,15 @@ li.card-category-list-item {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  width: calc(100% - 4.2em);
+  width: calc(100% - 3.8em);
 }
 #card-newest-comments .aside-list-item .thumbnail {
-  width: 4.2em;
-  height: 4.2em;
+  width: 3.8em;
+  height: 3.8em;
 }
 #card-newest-comments .aside-list-item .thumbnail img {
-  width: 4.2em;
-  height: 4.2em;
+  width: 3.8em;
+  height: 3.8em;
 }
 #card-newest-comments .aside-list-item .title {
   line-height: 1.2;
