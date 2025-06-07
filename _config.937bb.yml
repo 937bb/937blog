@@ -16,6 +16,7 @@ menu:
     # 追番页: /bangumis/ || anzhiyu-icon-bilibili
     # 相册集: /album/ || anzhiyu-icon-images
     # 小空调: /air-conditioner/ || anzhiyu-icon-fan
+  图库: /album/ || anzhiyu-icon-images
 
   关于:
     关于本人: /about/ || anzhiyu-icon-paper-plane
@@ -68,8 +69,8 @@ copy:
 formal:
   name: link || icon
 social:
-  Github: https://github.com/anzhiyu-c || anzhiyu-icon-github
-  BiliBili: https://space.bilibili.com/372204786 || anzhiyu-icon-bilibili
+  Github: / || anzhiyu-icon-github
+  BiliBili: / || anzhiyu-icon-bilibili
 
 # 作者卡片 状态
 author_status:
@@ -1088,7 +1089,7 @@ home_top:
     tips: 让自己简单点
     title: blog.937b.cn
     image: /images/bg/pexels1.jpg
-    link:
+    link: http://localhost:4000/album/
 
 # 朋友圈配置
 friends_vue:
@@ -1096,7 +1097,7 @@ friends_vue:
   vue_js: https://npm.elemecdn.com/anzhiyu-theme-static@1.1.1/friends/index.4f887d95.js
   apiurl: # 朋友圈后端地址
   top_tips: 使用 友链朋友圈 订阅友链最新文章
-  top_background:
+  top_background: /images/bg/pexels1.jpg
 
 # 深色模式粒子效果canvas
 universe:
@@ -1247,7 +1248,7 @@ dynamicEffect:
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 # 插入代码到头部 </head> 之前 和 底部 </body> 之前
 inject:
-  head:  
+  head:
     # 自定义css
     # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
 
