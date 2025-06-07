@@ -1,0 +1,680 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段 | 937blog</title><meta name="keywords" content="教程,Docker"><meta name="author" content="937bb"><meta name="copyright" content="937bb"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><meta name="application-name" content="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><meta property="og:url" content="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/index.html"><meta property="og:site_name" content="937blog"><meta property="og:description" content="🐳 精细控制你的容器：资源限制、命名与日志配置！你好呀！欢迎来到 Docker Compose 教程的第六章！我们已经一起走过了 Docker Compose 的基础构建（服务配置）、整体结构（顶层定义）、操作命令、服务依赖与健康检查，以及灵活的多环境配置。你的 Docker Compose “功"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://example.com/images/post/docker/docker.jpg"><meta property="article:author" content="937bb"><meta property="article:tag" content="937bb"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/images/post/docker/docker.jpg"><meta name="description" content="🐳 精细控制你的容器：资源限制、命名与日志配置！你好呀！欢迎来到 Docker Compose 教程的第六章！我们已经一起走过了 Docker Compose 的基础构建（服务配置）、整体结构（顶层定义）、操作命令、服务依赖与健康检查，以及灵活的多环境配置。你的 Docker Compose “功"><link rel="shortcut icon" href="/images/logo.jpg"><link rel="canonical" href="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?41346cfe263bfdaf732d04b03bf5c0c7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'http://101.126.93.9:8080/',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"631d63d3c7784afba5072a6ffc55586b","mailMd5":""},
+  music_page_default: "custom",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: 937bb","link":"链接: ","source":"来源: 937blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '937blog',
+  title: '🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段',
+  postAI: '',
+  pageFillDescription: '🐳 精细控制你的容器：资源限制、命名与日志配置！, 🏷️ 1. container_name：给你的容器起个专属名字, 🏋️ 2. 资源限制：控制你的容器不要吃光服务器资源！, 内存限制, CPU 限制, 新的 resources 语法 (Compose V3.8+), 🔖 3. labels：给你的服务和容器贴个标签, 🪵 4. logging：控制你的容器日志去哪儿？, 🧐 其他一些可能有用的服务字段, ✨ 综合示例：结合一些高级字段精细控制你的容器资源限制命名与日志配置你好呀欢迎来到教程的第六章我们已经一起走过了的基础构建服务配置整体结构顶层定义操作命令服务依赖与健康检查以及灵活的多环境配置你的功力正在显著提升现在是时候看看一些更进阶的服务配置字段了这些字段虽然不像那样常用但在特定的场景下却非常重要比如控制容器对服务器资源的占用给容器起个好记的名字或者调整容器的日志行为掌握这些字段能让你对容器的控制更加精细构建出更稳定更易于管理的化应用给你的容器起个专属名字默认情况下会给容器起一个由项目名服务名和序号组成的冗长名字比如虽然可以通过服务名在网络中互相访问但有时候你可能希望给特定的容器起一个更简单更固定更容易记住的名字字段就是用来干这个的给这个服务创建的容器指定一个固定的名字我想让服务的容器名字就叫这个数据库容器名字其他配置作用为服务创建的容器指定一个固定的用户友好的名称优点易于识别在命令输出中一眼就能认出容器方便操作可以直接使用这个固定名字来执行等命令而不用找那个长长的自动生成的名字缺点和注意事项唯一性容器的名字在宿主机上必须是唯一的如果你的文件会部署多次比如在不同的服务器上或者同一个服务需要运行多个副本这在配合时才会用到就不能使用因为这样会导致名字冲突不适用于因为名字是固定的如果你通过运行服务创建多个副本只有第一个容器能成功使用后面的会因为名字冲突而失败适合场景开发环境容器数量少且固定方便调试和手动操作单实例运行的服务不打算资源限制控制你的容器不要吃光服务器资源容器虽然提供了隔离但默认情况下容器里的应用可以使用宿主机几乎全部的和内存资源如果你的应用出现导致内存泄漏或者占用它可能会影响甚至拖垮宿主机上运行的其他服务或进程为了避免这种情况在生产环境或者资源有限的环境中强烈建议给你的容器设置资源限制提供了字段来让你限制容器可以使用的和内存内存限制设置容器可以使用的最大内存量包括和设置容器可以使用的总内存如果大于差值就是容器可以使用的最大量如果和相等则禁用如果不设置且设置了则容器可以使用的量是的两倍限制容器最大内存使用例如支持单位限制总内存这里设置为表示可以额外使用的如果只想限制且禁用可以这样和上限相等禁用其他配置作用防止单个容器耗尽宿主机的内存资源提高系统的稳定性流程当容器尝试使用的内存超过时会尝试终止该容器中的进程限制限制有几种方式可以提供不同粒度的控制或设置份额或权重这是一个相对值如果两个容器一个是默认值另一个是当资源紧张时第一个容器可能会获得两倍于第二个容器的时间这是一个软限制分配的份额较低在竞争时优先级低默认值作用在资源紧张时按比例分配时间给容器适合场景区分服务的优先级重要的服务给更高的份额和更精确的硬限制设置一个周期默认设置在这个周期内容器最多可以使用多少时间微秒例如或表示在每内容器最多使用的时间相当于限制为个核如果宿主机有个核设置相当于限制为个核通常只设置使用默认值即可限制在每个周期内最多使用微秒的时间相当于个核周期默认微秒通常不用写作用将容器的使用限制在固定的上限即使宿主机资源富余也不会超过这个限制适合场景严格控制服务占用的资源避免其影响其他关键服务或者根据服务需求分配固定的核数将容器绑定到特定的核将容器限定在宿主机的核和上运行将容器限定在宿主机的核上运行作用将容器的使用锁定在特定的核可以用于性能调优或隔离适合场景需要隔离高性能应用或者在架构下优化性能新的语法在及更高版本中推荐使用字段来组织资源限制结构更清晰确保版本资源限制通常是部署相关的配置放在下语法但在中也常用于普通模式硬限制不能超过限制为个核相当于限制最大内存相当于预留资源保证至少拥有预留个核预留内存其他配置注意字段最初是用于模式的部署配置但在中也被用于普通模式下的资源限制同时旧的顶层等字段仍然可用但推荐使用和不在下仍是服务顶层字段定义容器可以使用的资源上限硬限制定义为容器预留的资源量当宿主机资源不足时会优先保证预留了资源的容器这是一个软保证但有助于调度资源限制总结内存是最重要的通常和一起用软限制按比例分配时间硬限制限制绝对使用上限或推荐绑定核心将容器绑定到特定核推荐在生产环境至少设置和或给你的服务和容器贴个标签字段允许你给服务和由该服务创建的容器添加任意的元数据也就是键值对形式的标签这些标签本身不会影响容器的运行但可以被或第三方工具用于过滤组织监控自动化等给服务和容器添加标签格式标签名标签值可以用反向域名格式避免冲突标明应用版本告诉监控系统这个服务需要被监控告诉这个服务需要被暴露是一款流行的反向代理常用标签来发现服务其他配置作用为服务和容器附加自定义的元数据方便管理和自动化使用场景组织和分类按部门环境项目等对服务进行分类自动化和发现让像反向代理监控等工具通过标签来发现和配置服务过滤使用来查找特定标签的容器版本管理在标签中标明服务版本控制你的容器日志去哪儿容器的标准输出和标准错误会被捕获并默认使用驱动存储在宿主机上字段可以让你改变这种行为选择不同的日志驱动并配置驱动的选项配置日志行为指定日志驱动默认是默认驱动日志存储为文件在宿主机不记录日志所有日志输出会被丢弃除非你手动进入容器查看将日志发送到宿主机的服务将日志发送到宿主机的服务将日志发送到日志收集器配置日志驱动的选项驱动的选项限制日志文件大小和数量每个日志文件最大最多保留个日志文件总共最多日志其他驱动有不同的选项比如可以指定地址和其他配置作用控制容器日志的存储方式发送目的地以及相关的参数如文件大小限制常用的日志驱动默认简单方便日志保存在宿主机本地适合开发和简单部署但如果日志量大需要注意文件大小和数量限制防止磁盘空间耗尽禁用日志记录适合不需要日志的场景等这些是专业的日志收集驱动用于将日志发送到集中的日志管理系统方便统一收集分析和存储适合生产环境使用场景在开发环境中使用默认驱动并设置和防止日志文件过大在生产环境中配置驱动将日志发送到公司统一的日志收集平台对于某些输出大量日志但不需要保留的服务可以使用其他一些可能有用的服务字段除了上面详细介绍的还有一些字段在特定场景下也会用到这里简要提及赋予容器几乎所有宿主机的权限非常危险只有在极少数需要直接操作宿主机硬件或内核的特殊容器时才使用比如容器更细粒度地控制容器的能力比安全得多可以只赋予容器所需的特定权限比如用于配置网络接口用于修改系统时间将容器的根文件系统设置为只读提高了安全性强制应用将需要写入的数据保存到数据卷或挂载一个临时的文件系统到容器内数据只存在于宿主机内存中容器停止后数据会丢失适合存放敏感或临时的非持久化数据提高性能并减少对存储的在容器内部设置内核参数比如调优网络参数或者设置共享内存限制等非常危险慎用或者更安全的做法使容器文件系统只读挂载一个临时文件系统到容器的目录在容器内设置内核参数增大网络连接队列长度关闭其他配置这些字段相对更高级通常在遇到特定需求或问题时才会用到对于初学者重点掌握资源限制就足够了综合示例结合一些高级字段指定容器名字日志卷资源限制限制和内存限制最多使用个核限制最大内存预留个核预留内存添加标签配置日志限制文件大小和数量指定容器名字资源限制数据库可能需要更多资源限制最多使用个核限制最大内存预留个核预留内存添加标签配置日志也可以发送到其他地方数据库日志可能更大声明日志卷这个例子展示了如何在同一个文件里组合使用我们之前学过的核心字段和本章介绍的资源限制命名标签和日志配置本章小结我们学习了一些中用于精细控制服务行为的字段给容器指定固定名称方便操作但有唯一性限制资源限制以及推荐的语法控制容器对和内存的占用给服务和容器添加元数据标签用于组织过滤和自动化配置容器日志的驱动和选项控制日志的去向和管理方式简要了解了等高级字段掌握这些字段你可以更好地管理容器的资源使用提高系统的稳定性和安全性并方便地集成到现有的运维体系中至此我们已经覆盖了中大部分重要和常用的服务配置字段顶层结构以及基本操作命令在下一章我们将把这些知识串联起来通过一个完整的实际应用栈示例来回顾和实践并讨论一些使用的最佳实践敬请期待',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-07 14:01:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/images/logo.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">937blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-console-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 1.05rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">教程<sup>11</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">11</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Docker/" itemprop="url">Docker</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>教程</span></a><a class="article-meta__tags" href="/tags/Docker/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Docker</span></a></span></div></div><h1 class="post-title" itemprop="name headline">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-06-07T06:00:00.000Z" title="发表于 2025-06-07 14:00:00">2025-06-07</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-06-07T06:01:00.598Z" title="更新于 2025-06-07 14:01:00">2025-06-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">4.1k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为济南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>济南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/images/post/docker/docker.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/"><header><a class="post-meta-categories" href="/categories/Docker/" itemprop="url">Docker</a><a href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url">教程</a><a href="/tags/Docker/" tabindex="-1" itemprop="url">Docker</a><h1 id="CrawlerTitle" itemprop="name headline">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">937bb</span><time itemprop="dateCreated datePublished" datetime="2025-06-07T06:00:00.000Z" title="发表于 2025-06-07 14:00:00">2025-06-07</time><time itemprop="dateCreated datePublished" datetime="2025-06-07T06:01:00.598Z" title="更新于 2025-06-07 14:01:00">2025-06-07</time></header><h1 id="🐳-精细控制你的容器：资源限制、命名与日志配置！"><a href="#🐳-精细控制你的容器：资源限制、命名与日志配置！" class="headerlink" title="🐳 精细控制你的容器：资源限制、命名与日志配置！"></a>🐳 精细控制你的容器：资源限制、命名与日志配置！</h1><p>你好呀！欢迎来到 Docker Compose 教程的第六章！我们已经一起走过了 Docker Compose 的基础构建（服务配置）、整体结构（顶层定义）、操作命令、服务依赖与健康检查，以及灵活的多环境配置。你的 Docker Compose “功力”正在显著提升！</p>
+<p>现在，是时候看看一些更进阶的服务配置字段了。这些字段虽然不像 <code>image</code>、<code>ports</code>、<code>volumes</code> 那样常用，但在特定的场景下却非常重要，比如控制容器对服务器资源的占用、给容器起个好记的名字，或者调整容器的日志行为。</p>
+<p>掌握这些字段，能让你对容器的控制更加精细，构建出更稳定、更易于管理的 Docker 化应用。</p>
+<hr>
+<h2 id="🏷️-1-container-name：给你的容器起个专属名字"><a href="#🏷️-1-container-name：给你的容器起个专属名字" class="headerlink" title="🏷️ 1. container_name：给你的容器起个专属名字"></a>🏷️ 1. <code>container_name</code>：给你的容器起个专属名字</h2><p>默认情况下，Docker Compose 会给容器起一个由项目名、服务名和序号组成的冗长名字（比如 <code>myapp_web_1</code>）。虽然可以通过服务名在 Docker 网络中互相访问，但有时候你可能希望给特定的容器起一个更简单、更固定、更容易记住的名字。</p>
+<p><code>container_name</code> 字段就是用来干这个的！</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-web-app</span></span><br><span class="line">    <span class="comment"># container_name: 给这个服务创建的容器指定一个固定的名字</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_awesome_web_container</span> <span class="comment"># 我想让 web 服务的容器名字就叫这个</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="comment"># container_name:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_project_mysql</span> <span class="comment"># 数据库容器名字</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：为服务创建的容器指定一个固定的、用户友好的名称。</li>
+<li><strong>优点</strong>：<ul>
+<li><strong>易于识别</strong>：在 <code>docker ps</code> 命令输出中一眼就能认出容器。</li>
+<li><strong>方便操作</strong>：可以直接使用这个固定名字来执行 <code>docker stop</code>, <code>docker rm</code>, <code>docker exec</code> 等 Docker 命令，而不用找那个长长的自动生成的名字。</li>
+</ul>
+</li>
+<li><strong>缺点和注意事项</strong>：<ul>
+<li><strong>唯一性</strong>：Docker 容器的名字在宿主机上必须是唯一的。如果你的 <code>docker-compose.yml</code> 文件会部署多次（比如在不同的服务器上），或者同一个服务需要运行多个副本（<code>replicas &gt; 1</code>，这在 Docker Compose V3 配合 Swarm&#x2F;Kubernetes 时才会用到），就不能使用 <code>container_name</code>，因为这样会导致名字冲突。</li>
+<li><strong>不适用于 Scale Up</strong>：因为名字是固定的，如果你通过 <code>docker-compose up --scale web=3</code> 运行 <code>web</code> 服务创建多个副本，只有第一个容器能成功使用 <code>container_name</code>，后面的会因为名字冲突而失败。</li>
+</ul>
+</li>
+<li><strong>适合场景</strong>：<ul>
+<li>开发环境，容器数量少且固定，方便调试和手动操作。</li>
+<li>单实例运行的服务（不打算 Scale Up）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🏋️-2-资源限制：控制你的容器不要“吃光”服务器资源！"><a href="#🏋️-2-资源限制：控制你的容器不要“吃光”服务器资源！" class="headerlink" title="🏋️ 2. 资源限制：控制你的容器不要“吃光”服务器资源！"></a>🏋️ 2. 资源限制：控制你的容器不要“吃光”服务器资源！</h2><p>容器虽然提供了隔离，但默认情况下，容器里的应用可以使用宿主机几乎全部的 CPU 和内存资源。如果你的应用出现 Bug 导致内存泄漏或者 CPU 占用 100%，它可能会影响甚至拖垮宿主机上运行的其他服务或进程。</p>
+<p>为了避免这种情况，在生产环境或者资源有限的环境中，强烈建议给你的容器设置<strong>资源限制 (Resource Limits)</strong>。Docker Compose 提供了字段来让你限制容器可以使用的 CPU 和内存。</p>
+<h3 id="内存限制"><a href="#内存限制" class="headerlink" title="内存限制"></a>内存限制</h3><ul>
+<li><strong><code>mem_limit</code></strong>：设置容器可以使用的<strong>最大内存量</strong>（包括 RAM 和 Swap）。</li>
+<li><strong><code>memswap_limit</code></strong>：设置容器可以使用的总内存（RAM + Swap）。如果 <code>memswap_limit</code> 大于 <code>mem_limit</code>，差值就是容器可以使用 Swap 的最大量。如果 <code>memswap_limit</code> 和 <code>mem_limit</code> 相等，则禁用 Swap。如果 <code>memswap_limit</code> 不设置且 <code>mem_limit</code> 设置了，则容器可以使用 Swap 的量是 <code>mem_limit</code> 的两倍。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-memory-hungry-app</span></span><br><span class="line">    <span class="comment"># mem_limit: 限制容器最大内存使用，例如 512MB</span></span><br><span class="line">    <span class="attr">mem_limit:</span> <span class="string">512m</span> <span class="comment"># 支持 b, k, m, g (bytes, kilobytes, megabytes, gigabytes) 单位</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># memswap_limit: 限制总内存 (RAM + Swap)。这里设置为 1g，表示可以额外使用 512m 的 Swap (1g - 512m)</span></span><br><span class="line">    <span class="attr">memswap_limit:</span> <span class="string">1g</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果只想限制 RAM 且禁用 Swap，可以这样：</span></span><br><span class="line">    <span class="comment"># mem_limit: 512m</span></span><br><span class="line">    <span class="comment"># memswap_limit: 512m # RAM 和 Swap 上限相等，禁用 Swap</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：防止单个容器耗尽宿主机的内存资源，提高系统的稳定性。</li>
+<li><strong>流程</strong>：当容器尝试使用的内存超过 <code>mem_limit</code> 时，Docker 会尝试终止该容器中的进程。</li>
+</ul>
+<h3 id="CPU-限制"><a href="#CPU-限制" class="headerlink" title="CPU 限制"></a>CPU 限制</h3><p>CPU 限制有几种方式，可以提供不同粒度的控制：</p>
+<ul>
+<li><p><strong><code>cpu_shares</code> (或 <code>cpu_weight</code>)</strong>：设置 CPU “份额”或“权重”。这是一个相对值。如果两个容器，一个 <code>cpu_shares</code> 是 1024 (默认值)，另一个是 512，当 CPU 资源紧张时，第一个容器可能会获得两倍于第二个容器的 CPU 时间。这是一个软限制。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-app</span></span><br><span class="line">    <span class="attr">cpu_shares:</span> <span class="number">512</span> <span class="comment"># 分配的 CPU 份额较低，在 CPU 竞争时优先级低</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">worker:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-background-worker</span></span><br><span class="line">    <span class="attr">cpu_shares:</span> <span class="number">1024</span> <span class="comment"># 默认值</span></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>：在 CPU 资源紧张时，按比例分配 CPU 时间给容器。</li>
+<li><strong>适合场景</strong>：区分服务的优先级，重要的服务给更高的份额。</li>
+</ul>
+</li>
+<li><p><strong><code>cpu_quota</code> 和 <code>cpu_period</code></strong>：更精确的 CPU 硬限制。<code>cpu_period</code> 设置一个周期（默认 100ms），<code>cpu_quota</code> 设置在这个周期内容器最多可以使用多少 CPU 时间（微秒，1ms &#x3D; 1000us）。</p>
+<ul>
+<li>例如，<code>cpu_period: 100ms</code> (或 <code>100000</code>)，<code>cpu_quota: 50000</code>，表示在每 100ms 内，容器最多使用 50ms 的 CPU 时间，相当于限制为 0.5 个 CPU 核。</li>
+<li>如果宿主机有 4 个 CPU 核，设置 <code>cpu_quota: 200000</code> 相当于限制为 2 个 CPU 核 (<code>200000 / 100000 = 2</code>)。</li>
+<li>通常只设置 <code>cpu_quota</code>，<code>cpu_period</code> 使用默认值即可。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-app</span></span><br><span class="line">    <span class="comment"># cpu_quota: 限制在每个周期内最多使用 50000 微秒的 CPU 时间 (相当于 0.5 个 CPU 核)</span></span><br><span class="line">    <span class="attr">cpu_quota:</span> <span class="number">50000</span></span><br><span class="line">    <span class="comment"># cpu_period: 周期，默认 100000 微秒 (100ms)</span></span><br><span class="line">    <span class="comment"># cpu_period: 100000 # 通常不用写</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>：将容器的 CPU 使用限制在固定的上限，即使宿主机资源富余，也不会超过这个限制。</li>
+<li><strong>适合场景</strong>：严格控制服务占用的 CPU 资源，避免其影响其他关键服务，或者根据服务需求分配固定的 CPU 核数。</li>
+</ul>
+</li>
+<li><p><strong><code>cpuset</code></strong>：将容器绑定到特定的 CPU 核。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-app</span></span><br><span class="line">    <span class="attr">cpuset:</span> <span class="string">&quot;0,1&quot;</span> <span class="comment"># 将容器限定在宿主机的 CPU 核 0 和 1 上运行</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">worker:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-worker</span></span><br><span class="line">    <span class="attr">cpuset:</span> <span class="string">&quot;2&quot;</span> <span class="comment"># 将容器限定在宿主机的 CPU 核 2 上运行</span></span><br><span class="line">  <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>：将容器的 CPU 使用锁定在特定的 CPU 核，可以用于性能调优或隔离。</li>
+<li><strong>适合场景</strong>：需要隔离高性能应用，或者在 NUMA 架构下优化性能。</li>
+</ul>
+</li>
+</ul>
+<h3 id="新的-resources-语法-Compose-V3-8"><a href="#新的-resources-语法-Compose-V3-8" class="headerlink" title="新的 resources 语法 (Compose V3.8+)"></a>新的 <code>resources</code> 语法 (Compose V3.8+)</h3><p>在 Docker Compose V3.8 及更高版本中，推荐使用 <code>resources</code> 字段来组织资源限制，结构更清晰。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span> <span class="comment"># 确保版本 &gt;= 3.8</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-app</span></span><br><span class="line">    <span class="attr">deploy:</span> <span class="comment"># 资源限制通常是部署相关的配置，放在 deploy 下 (Swarm Mode 语法，但在 Compose V3+ 中也常用于普通模式)</span></span><br><span class="line">      <span class="attr">resources:</span></span><br><span class="line">        <span class="attr">limits:</span> <span class="comment"># 硬限制 (不能超过)</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;0.5&#x27;</span> <span class="comment"># 限制为 0.5 个 CPU 核 (相当于 cpu_quota / cpu_period)</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">512M</span> <span class="comment"># 限制最大内存 512MB (相当于 mem_limit)</span></span><br><span class="line">        <span class="attr">reservations:</span> <span class="comment"># 预留资源 (保证至少拥有)</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;0.25&#x27;</span> <span class="comment"># 预留 0.25 个 CPU 核</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">256M</span> <span class="comment"># 预留 256MB 内存</span></span><br><span class="line">    <span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+<p><em>注意：<code>deploy</code> 字段最初是用于 Docker Swarm 模式的部署配置，但在 Docker Compose V3.8+ 中，<code>deploy.resources</code> 也被用于普通模式下的资源限制。同时，旧的顶层 <code>cpus</code>, <code>mem_limit</code>, <code>memswap_limit</code> 等字段仍然可用，但推荐使用 <code>deploy.resources</code>。<code>cpu_shares</code> 和 <code>cpuset</code> 不在 <code>deploy.resources</code> 下，仍是服务顶层字段。</em></p>
+<ul>
+<li><p><strong><code>deploy.resources.limits</code></strong>：定义容器可以使用的资源上限（硬限制）。</p>
+</li>
+<li><p><strong><code>deploy.resources.reservations</code></strong>：定义为容器预留的资源量。当宿主机资源不足时，Docker 会优先保证预留了资源的容器。这是一个软保证，但有助于调度。</p>
+</li>
+<li><p><strong>资源限制总结</strong>：</p>
+<ul>
+<li><strong>内存</strong>：<code>mem_limit</code> 是最重要的，通常和 <code>memswap_limit</code> 一起用。</li>
+<li><strong>CPU</strong>：<ul>
+<li>软限制：<code>cpu_shares</code> (按比例分配 CPU 时间)</li>
+<li>硬限制：<code>cpu_quota</code> &#x2F; <code>cpu_period</code> (限制绝对 CPU 使用上限) 或 <code>deploy.resources.limits.cpus</code> (推荐 V3.8+)。</li>
+<li>绑定核心：<code>cpuset</code> (将容器绑定到特定核)。</li>
+</ul>
+</li>
+<li><strong>推荐</strong>：在生产环境，至少设置 <code>mem_limit</code> 和 <code>deploy.resources.limits.cpus</code> 或 <code>cpu_quota</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🔖-3-labels：给你的服务和容器贴个“标签”"><a href="#🔖-3-labels：给你的服务和容器贴个“标签”" class="headerlink" title="🔖 3. labels：给你的服务和容器贴个“标签”"></a>🔖 3. <code>labels</code>：给你的服务和容器贴个“标签”</h2><p><code>labels</code> 字段允许你给服务和由该服务创建的容器添加任意的元数据（metadata），也就是键值对形式的标签。这些标签本身不会影响容器的运行，但可以被 Docker 或第三方工具用于过滤、组织、监控、自动化等。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-web-app</span></span><br><span class="line">    <span class="comment"># labels: 给服务和容器添加标签</span></span><br><span class="line">    <span class="attr">labels:</span></span><br><span class="line">      <span class="comment"># 格式： 标签名: 标签值</span></span><br><span class="line">      <span class="attr">com.example.department:</span> <span class="string">&quot;marketing&quot;</span> <span class="comment"># 可以用反向域名格式避免冲突</span></span><br><span class="line">      <span class="attr">version:</span> <span class="string">&quot;1.2.0&quot;</span> <span class="comment"># 标明应用版本</span></span><br><span class="line">      <span class="attr">monitoring.enabled:</span> <span class="string">&quot;true&quot;</span> <span class="comment"># 告诉监控系统这个服务需要被监控</span></span><br><span class="line">      <span class="attr">traefik.enable:</span> <span class="string">&quot;true&quot;</span> <span class="comment"># 告诉 Traefik 这个服务需要被暴露 (Traefik 是一款流行的反向代理，常用标签来发现服务)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：为服务和容器附加自定义的元数据，方便管理和自动化。</li>
+<li><strong>使用场景</strong>：<ul>
+<li><strong>组织和分类</strong>：按部门、环境、项目等对服务进行分类。</li>
+<li><strong>自动化和发现</strong>：让像 Traefik (反向代理)、Prometheus (监控) 等工具通过标签来发现和配置服务。</li>
+<li><strong>过滤</strong>：使用 <code>docker ps --filter label=key=value</code> 来查找特定标签的容器。</li>
+<li><strong>版本管理</strong>：在标签中标明服务版本。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🪵-4-logging：控制你的容器日志去哪儿？"><a href="#🪵-4-logging：控制你的容器日志去哪儿？" class="headerlink" title="🪵 4. logging：控制你的容器日志去哪儿？"></a>🪵 4. <code>logging</code>：控制你的容器日志去哪儿？</h2><p>容器的标准输出 (stdout) 和标准错误 (stderr) 会被 Docker 捕获，并默认使用 <code>json-file</code> 驱动存储在宿主机上。<code>logging</code> 字段可以让你改变这种行为，选择不同的日志驱动 (Logging Driver) 并配置驱动的选项。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-app</span></span><br><span class="line">    <span class="comment"># logging: 配置日志行为</span></span><br><span class="line">    <span class="attr">logging:</span></span><br><span class="line">      <span class="comment"># driver: 指定日志驱动，默认是 json-file</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">&quot;json-file&quot;</span> <span class="comment"># 默认驱动，日志存储为 JSON 文件在宿主机</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># driver: &quot;none&quot; # 不记录日志，所有日志输出会被丢弃 (除非你手动进入容器查看)</span></span><br><span class="line">      <span class="comment"># driver: &quot;syslog&quot; # 将日志发送到宿主机的 syslog 服务</span></span><br><span class="line">      <span class="comment"># driver: &quot;journald&quot; # 将日志发送到宿主机的 systemd-journald 服务</span></span><br><span class="line">      <span class="comment"># driver: &quot;fluentd&quot; # 将日志发送到 Fluentd 日志收集器</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># options: 配置日志驱动的选项</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="comment"># json-file 驱动的选项：限制日志文件大小和数量</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">&quot;10m&quot;</span> <span class="comment"># 每个日志文件最大 10MB</span></span><br><span class="line">        <span class="attr">max-file:</span> <span class="string">&quot;5&quot;</span> <span class="comment"># 最多保留 5 个日志文件 (总共最多 50MB 日志)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 其他驱动有不同的选项，比如 syslog 可以指定地址和 Facility</span></span><br><span class="line">        <span class="comment"># syslog-address: &quot;tcp://192.168.1.5:514&quot;</span></span><br><span class="line">        <span class="comment"># syslog-facility: &quot;daemon&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：控制容器日志的存储方式、发送目的地以及相关的参数（如文件大小限制）。</li>
+<li><strong>常用的日志驱动</strong>：<ul>
+<li><code>json-file</code> (默认)：简单方便，日志保存在宿主机本地，适合开发和简单部署。但如果日志量大，需要注意文件大小和数量限制，防止磁盘空间耗尽。</li>
+<li><code>none</code>：禁用日志记录，适合不需要日志的场景。</li>
+<li><code>syslog</code>, <code>journald</code>, <code>fluentd</code>, <code>splunk</code>, <code>awslogs</code> 等：这些是专业的日志收集驱动，用于将日志发送到集中的日志管理系统，方便统一收集、分析和存储，适合生产环境。</li>
+</ul>
+</li>
+<li><strong>使用场景</strong>：<ul>
+<li>在开发环境中，使用默认 <code>json-file</code> 驱动并设置 <code>max-size</code> 和 <code>max-file</code> 防止日志文件过大。</li>
+<li>在生产环境中，配置 <code>logging</code> 驱动将日志发送到公司统一的日志收集平台。</li>
+<li>对于某些输出大量日志但不需要保留的服务，可以使用 <code>driver: &quot;none&quot;</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🧐-其他一些可能有用的服务字段"><a href="#🧐-其他一些可能有用的服务字段" class="headerlink" title="🧐 其他一些可能有用的服务字段"></a>🧐 其他一些可能有用的服务字段</h2><p>除了上面详细介绍的，还有一些字段在特定场景下也会用到，这里简要提及：</p>
+<ul>
+<li><strong><code>privileged: true</code></strong>：赋予容器几乎所有宿主机的权限。非常危险！只有在极少数需要直接操作宿主机硬件或内核的特殊容器时才使用，比如 Docker In Docker (DIND) 容器。</li>
+<li><strong><code>cap_add</code>, <code>cap_drop</code></strong>：更细粒度地控制容器的 Linux 能力 (Capabilities)。比 <code>privileged</code> 安全得多，可以只赋予容器所需的特定权限（比如 <code>NET_ADMIN</code> 用于配置网络接口，<code>SYS_TIME</code> 用于修改系统时间）。</li>
+<li><strong><code>read_only: true</code></strong>：将容器的根文件系统设置为只读。提高了安全性，强制应用将需要写入的数据保存到数据卷或 <code>/tmp</code>。</li>
+<li><strong><code>tmpfs</code></strong>：挂载一个临时的文件系统到容器内，数据只存在于宿主机内存中，容器停止后数据会丢失。适合存放敏感或临时的非持久化数据，提高性能并减少对存储的 I&#x2F;O。</li>
+<li><strong><code>sysctls</code></strong>：在容器内部设置内核参数 (sysctls)。比如调优网络参数，或者设置共享内存限制等。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">special_app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-special-app</span></span><br><span class="line">    <span class="attr">privileged:</span> <span class="literal">true</span> <span class="comment"># 非常危险，慎用！</span></span><br><span class="line">    <span class="comment"># 或者更安全的做法：</span></span><br><span class="line">    <span class="comment"># cap_add:</span></span><br><span class="line">    <span class="comment">#   - NET_ADMIN</span></span><br><span class="line">    <span class="comment">#   - SYS_TIME</span></span><br><span class="line">    <span class="attr">read_only:</span> <span class="literal">true</span> <span class="comment"># 使容器文件系统只读</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">temp_data_processor:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-processor</span></span><br><span class="line">    <span class="comment"># tmpfs: 挂载一个临时文件系统到容器的 /app/temp 目录</span></span><br><span class="line">    <span class="attr">tmpfs:</span> <span class="string">/app/temp</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">high_perf_network_app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">my-network-app</span></span><br><span class="line">    <span class="comment"># sysctls: 在容器内设置内核参数</span></span><br><span class="line">    <span class="attr">sysctls:</span></span><br><span class="line">      <span class="attr">net.core.somaxconn:</span> <span class="number">1024</span> <span class="comment"># 增大网络连接队列长度</span></span><br><span class="line">      <span class="attr">net.ipv4.tcp_syncookies:</span> <span class="number">0</span> <span class="comment"># 关闭 SYN cookies</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ... 其他配置 ...</span></span><br></pre></td></tr></table></figure>
+<p>这些字段相对更高级，通常在遇到特定需求或问题时才会用到。对于初学者，重点掌握 <code>container_name</code>, 资源限制 (<code>mem_limit</code>, <code>deploy.resources</code>), <code>labels</code>, <code>logging</code> 就足够了。</p>
+<hr>
+<h2 id="✨-综合示例：结合一些高级字段"><a href="#✨-综合示例：结合一些高级字段" class="headerlink" title="✨ 综合示例：结合一些高级字段"></a>✨ 综合示例：结合一些高级字段</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_web_app</span> <span class="comment"># 指定容器名字</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:3000&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">.:/app</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_logs:/app/logs</span> <span class="comment"># 日志卷</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">NODE_ENV=production</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">API_KEY=$&#123;API_KEY&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 资源限制：限制 CPU 和内存</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">resources:</span></span><br><span class="line">        <span class="attr">limits:</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;0.75&#x27;</span> <span class="comment"># 限制最多使用 0.75 个 CPU 核</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">768M</span> <span class="comment"># 限制最大内存 768MB</span></span><br><span class="line">        <span class="attr">reservations:</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;0.25&#x27;</span> <span class="comment"># 预留 0.25 个 CPU 核</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">256M</span> <span class="comment"># 预留 256MB 内存</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">labels:</span> <span class="comment"># 添加标签</span></span><br><span class="line">      <span class="attr">com.example.service:</span> <span class="string">&quot;web&quot;</span></span><br><span class="line">      <span class="attr">com.example.version:</span> <span class="string">&quot;1.5&quot;</span></span><br><span class="line">      <span class="attr">env:</span> <span class="string">&quot;production&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">logging:</span> <span class="comment"># 配置日志，限制文件大小和数量</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">&quot;json-file&quot;</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">&quot;5m&quot;</span></span><br><span class="line">        <span class="attr">max-file:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">db:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;curl&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;http://localhost:3000/health&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">30s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_app_db</span> <span class="comment"># 指定容器名字</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=$&#123;DB_ROOT_PASSWORD&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_DATABASE=mydatabase</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 资源限制：数据库可能需要更多资源</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">resources:</span></span><br><span class="line">        <span class="attr">limits:</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;1.0&#x27;</span> <span class="comment"># 限制最多使用 1 个 CPU 核</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="number">1.</span><span class="string">5G</span> <span class="comment"># 限制最大内存 1.5GB</span></span><br><span class="line">        <span class="attr">reservations:</span></span><br><span class="line">          <span class="attr">cpus:</span> <span class="string">&#x27;0.5&#x27;</span> <span class="comment"># 预留 0.5 个 CPU 核</span></span><br><span class="line">          <span class="attr">memory:</span> <span class="string">512M</span> <span class="comment"># 预留 512MB 内存</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">labels:</span> <span class="comment"># 添加标签</span></span><br><span class="line">      <span class="attr">com.example.service:</span> <span class="string">&quot;database&quot;</span></span><br><span class="line">      <span class="attr">db_type:</span> <span class="string">&quot;mysql&quot;</span></span><br><span class="line">      <span class="attr">env:</span> <span class="string">&quot;production&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">logging:</span> <span class="comment"># 配置日志，也可以发送到其他地方</span></span><br><span class="line">      <span class="attr">driver:</span> <span class="string">&quot;json-file&quot;</span></span><br><span class="line">      <span class="attr">options:</span></span><br><span class="line">        <span class="attr">max-size:</span> <span class="string">&quot;20m&quot;</span> <span class="comment"># 数据库日志可能更大</span></span><br><span class="line">        <span class="attr">max-file:</span> <span class="string">&quot;5&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;mysqladmin&quot;</span>, <span class="string">&quot;ping&quot;</span>, <span class="string">&quot;-h&quot;</span>, <span class="string">&quot;localhost&quot;</span>]</span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">db_data:</span></span><br><span class="line">  <span class="attr">app_logs:</span> <span class="comment"># 声明日志卷</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">app_network:</span></span><br></pre></td></tr></table></figure>
+<p>这个例子展示了如何在同一个文件里组合使用我们之前学过的核心字段和本章介绍的资源限制、命名、标签和日志配置。</p>
+<hr>
+<p><strong>本章小结</strong></p>
+<p>我们学习了一些 Docker Compose 中用于精细控制服务行为的字段：</p>
+<ul>
+<li><code>container_name</code>：给容器指定固定名称（方便操作，但有唯一性限制）。</li>
+<li>资源限制 (<code>mem_limit</code>, <code>memswap_limit</code>, <code>cpu_shares</code>, <code>cpu_quota</code>, <code>cpuset</code>) 以及推荐的 <code>deploy.resources</code> 语法：控制容器对 CPU 和内存的占用。</li>
+<li><code>labels</code>：给服务和容器添加元数据标签，用于组织、过滤和自动化。</li>
+<li><code>logging</code>：配置容器日志的驱动和选项，控制日志的去向和管理方式。</li>
+<li>简要了解了 <code>privileged</code>, <code>cap_add/drop</code>, <code>read_only</code>, <code>tmpfs</code>, <code>sysctls</code> 等高级字段。</li>
+</ul>
+<p>掌握这些字段，你可以更好地管理容器的资源使用，提高系统的稳定性和安全性，并方便地集成到现有的运维体系中。</p>
+<p>至此，我们已经覆盖了 Docker Compose 中大部分重要和常用的服务配置字段、顶层结构以及基本操作命令。在下一章，我们将把这些知识串联起来，通过一个<strong>完整的实际应用栈示例</strong>来回顾和实践，并讨论一些使用 Docker Compose 的<strong>最佳实践</strong>！敬请期待！</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">937bb</div><div class="post-copyright__author_desc">一个爱好编程的小白</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/')">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段&amp;url=http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/&amp;pic=/images/post/docker/docker.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">937blog</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%95%99%E7%A8%8B/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>教程<span class="tagsPageCount">11</span></a><a class="post-meta__box__tags" href="/tags/Docker/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Docker<span class="tagsPageCount">9</span></a></div></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</div></div></a></div><div class="next-post pull-right"><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🐳 构建一个完整的应用栈：实战与最佳实践指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolumes%E3%80%81networks%E3%80%81configs%E3%80%81secrets/" title="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 字段详解篇（一）：服务配置（services）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%95%99%E7%A8%8B%EF%BC%88%E5%90%AB%E5%AD%97%E6%AE%B5%E6%B3%A8%E9%87%8A%EF%BC%89/" title="🐳 Dockerfile + Docker Compose 教程（含字段注释）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Dockerfile + Docker Compose 教程（含字段注释）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" title="🐳 构建一个完整的应用栈：实战与最佳实践指南"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 构建一个完整的应用栈：实战与最佳实践指南</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</div></div></a></div><div><a href="/2025/06/06/Docker/Docker%20%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89/" title="Docker 从零开始入门教程（超详细）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-06</div><div class="title">Docker 从零开始入门教程（超详细）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">937bb</h1><div class="author-info__desc">一个爱好编程的小白</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/anzhiyu-c" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/372204786" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>欢迎</span></div><div class="announcement_content"><span>👋🏻 Hi，我是937bb，欢迎你！</span><br> <span>❓ 如有问题欢迎评论区交流！</span><br> <span>😫 页面异常？尝试<kbd>Ctrl</kbd>+<kbd>F5</kbd></span><br> <span>📧 如需联系我：<a href="mailto:ruoms@qq.com"><b>发送邮件🚀</b></a></span> <div id="welcome-info"></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%90%B3-%E7%B2%BE%E7%BB%86%E6%8E%A7%E5%88%B6%E4%BD%A0%E7%9A%84%E5%AE%B9%E5%99%A8%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E3%80%81%E5%91%BD%E5%90%8D%E4%B8%8E%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">🐳 精细控制你的容器：资源限制、命名与日志配置！</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%B7%EF%B8%8F-1-container-name%EF%BC%9A%E7%BB%99%E4%BD%A0%E7%9A%84%E5%AE%B9%E5%99%A8%E8%B5%B7%E4%B8%AA%E4%B8%93%E5%B1%9E%E5%90%8D%E5%AD%97"><span class="toc-number">1.1.</span> <span class="toc-text">🏷️ 1. container_name：给你的容器起个专属名字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%8B%EF%B8%8F-2-%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%EF%BC%9A%E6%8E%A7%E5%88%B6%E4%BD%A0%E7%9A%84%E5%AE%B9%E5%99%A8%E4%B8%8D%E8%A6%81%E2%80%9C%E5%90%83%E5%85%89%E2%80%9D%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%B5%84%E6%BA%90%EF%BC%81"><span class="toc-number">1.2.</span> <span class="toc-text">🏋️ 2. 资源限制：控制你的容器不要“吃光”服务器资源！</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">内存限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU-%E9%99%90%E5%88%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">CPU 限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84-resources-%E8%AF%AD%E6%B3%95-Compose-V3-8"><span class="toc-number">1.2.3.</span> <span class="toc-text">新的 resources 语法 (Compose V3.8+)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%96-3-labels%EF%BC%9A%E7%BB%99%E4%BD%A0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%92%8C%E5%AE%B9%E5%99%A8%E8%B4%B4%E4%B8%AA%E2%80%9C%E6%A0%87%E7%AD%BE%E2%80%9D"><span class="toc-number">1.3.</span> <span class="toc-text">🔖 3. labels：给你的服务和容器贴个“标签”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%AA%B5-4-logging%EF%BC%9A%E6%8E%A7%E5%88%B6%E4%BD%A0%E7%9A%84%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97%E5%8E%BB%E5%93%AA%E5%84%BF%EF%BC%9F"><span class="toc-number">1.4.</span> <span class="toc-text">🪵 4. logging：控制你的容器日志去哪儿？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%90-%E5%85%B6%E4%BB%96%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E6%9C%89%E7%94%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%AD%97%E6%AE%B5"><span class="toc-number">1.5.</span> <span class="toc-text">🧐 其他一些可能有用的服务字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%A8-%E7%BB%BC%E5%90%88%E7%A4%BA%E4%BE%8B%EF%BC%9A%E7%BB%93%E5%90%88%E4%B8%80%E4%BA%9B%E9%AB%98%E7%BA%A7%E5%AD%97%E6%AE%B5"><span class="toc-number">1.6.</span> <span class="toc-text">✨ 综合示例：结合一些高级字段</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" title="🐳 构建一个完整的应用栈：实战与最佳实践指南"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 构建一个完整的应用栈：实战与最佳实践指南"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" title="🐳 构建一个完整的应用栈：实战与最佳实践指南">🐳 构建一个完整的应用栈：实战与最佳实践指南</a><time datetime="2025-06-07T06:29:24.470Z" title="更新于 2025-06-07 14:29:24">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/" title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/" title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</a><time datetime="2025-06-07T06:01:00.598Z" title="更新于 2025-06-07 14:01:00">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</a><time datetime="2025-06-07T05:15:07.967Z" title="更新于 2025-06-07 13:15:07">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战">🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战</a><time datetime="2025-06-07T04:58:06.145Z" title="更新于 2025-06-07 12:58:06">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）">🐳 Docker Compose 字段详解篇（一）：服务配置（services）</a><time datetime="2025-06-07T04:55:32.539Z" title="更新于 2025-06-07 12:55:32">2025-06-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2025 By <a class="footer-bar-link" href="/" title="937bb" target="_blank">937bb</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="鲁ICP备2024128229号-1">鲁ICP备2024128229号-1</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 0.88rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">教程<sup>11</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script> // 消除控制台打印
+ var HoldLog = console.log;
+ console.log = function () {};
+ let now1 = new Date();
+ queueMicrotask(() => {
+   const Log = function () {
+     HoldLog.apply(console, arguments);
+   }; //在恢复前输出日志
+   const grt = new Date("01/01/2025 00:00:00"); //此处修改你的建站时间或者网站上线时间
+   now1.setTime(now1.getTime() + 250);
+   const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+   const dnum = Math.floor(days);
+   const ascll = [
+     `欢迎使用安知鱼!`,
+     `生活明朗, 万物可爱`,
+     `
+ █████╗ ██████╗ ███████╗██████╗ ██████╗ 
+██╔══██╗╚════██╗╚════██║██╔══██╗██╔══██╗
+╚██████║ █████╔╝    ██╔╝██████╔╝██████╔╝
+ ╚═══██║ ╚═══██╗   ██╔╝ ██╔══██╗██╔══██╗
+ █████╔╝██████╔╝   ██║  ██████╔╝██████╔╝
+ ╚════╝ ╚═════╝    ╚═╝  ╚═════╝ ╚═════╝ 
+     `,
+     "已上线",
+     dnum,
+     "天",
+     //- "©2020 By 安知鱼 V1.6.14",
+   ];
+   const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+   setTimeout(
+     Log.bind(
+       console,
+       `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       ""
+     )
+   );
+   setTimeout(
+     Log.bind(
+       console,
+       `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+       "color:white; background-color:#4fd953",
+       "",
+       "",
+       'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(
+       console,
+       //- "%c ⚡ Powered by 安知鱼 %c 你正在访问 937bb 的博客.",
+       "color:white; background-color:#f0ad4e",
+       ""
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+   );
+ });</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'http://101.126.93.9:8080/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        const $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+        $dom2.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml2 = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+    $dom2 && ($dom2.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom2)
+  }
+
+    const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a  href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `          
+        <a  class="rightc"  href='${array[i].url}' title='${array[i].content}'>
+        <div class='comment'>
+          <div class='title'>${array[i].content}</div>
+          <div class='userName'>${array[i].nick} - ${anzhiyu.diffDate(array[i].date, true)}</time></div>
+          </div>
+
+        </a>
+        </div>`
+      }
+
+        //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+    if (document.querySelector('#card-console-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml2(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

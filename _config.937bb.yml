@@ -184,6 +184,7 @@ post_meta:
     categories: true # true or false 主页是否显示分类
     tags: true # true or false 主页是否显示标籤
     label: true # true or false 显示描述性文字
+    
   post:
     date_type: both # created or updated or both 文章页日期是创建日或者更新日或都显示
     date_format: date # date/relative 显示日期还是相对日期
@@ -433,7 +434,7 @@ footer:
     since: 2020
   custom_text:
   runtime:
-    enable: true
+    enable: false
     launch_time: 01/01/2025 00:00:00 # 网站上线时间
     work_img:
     work_description: 距离月入25k也就还差一个大佬带我~
@@ -625,9 +626,12 @@ theme_color:
   text_selection: "#2128bd"
   link_color: "var(--anzhiyu-fontcolor)"
   meta_color: "var(--anzhiyu-fontcolor)"
-  hr_color: "#4259ef23"
-  code_foreground: "#fff"
-  code_background: "var(--anzhiyu-code-stress)"
+  hr_color: "#4259ef"
+  code_foreground: "#fe6e8e" # 代码块文字颜色
+  dark_foreground: "#fff" # 暗主题 代码块文字颜色
+  code_background: "color-mix(in oklab,#F08000 20%,transparent)" # 代码块背景
+  dark_code_background: "#080808" # 暗主题 代码块背景
+
   toc_color: "#425AEF"
   #   blockquote_padding_color: "#425AEF"
   #   blockquote_background_color: "#425AEF"

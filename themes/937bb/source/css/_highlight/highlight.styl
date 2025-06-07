@@ -212,9 +212,9 @@ $code-block
       font-size: 16px
       if $highlight_theme == 'light' || ($highlight_theme == 'mac light')
         &:hover
-          background: var(--anzhiyu-main);
+          background: $code-background
           i
-            color: var(--anzhiyu-white);
+            color: $code-foreground
 
       i
         if $highlight_theme == 'light' || ($highlight_theme == 'mac light')

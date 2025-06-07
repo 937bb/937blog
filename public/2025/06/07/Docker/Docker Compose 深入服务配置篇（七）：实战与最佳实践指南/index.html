@@ -1,0 +1,589 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>🐳 构建一个完整的应用栈：实战与最佳实践指南 | 937blog</title><meta name="keywords" content="教程,Docker"><meta name="author" content="937bb"><meta name="copyright" content="937bb"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="🐳 构建一个完整的应用栈：实战与最佳实践指南"><meta name="application-name" content="🐳 构建一个完整的应用栈：实战与最佳实践指南"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="🐳 构建一个完整的应用栈：实战与最佳实践指南"><meta property="og:url" content="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/index.html"><meta property="og:site_name" content="937blog"><meta property="og:description" content="🐳 构建一个完整的应用栈：实战与最佳实践指南想象一下，你正在开发一个简单的 Web 应用，它包含：  一个前端：可能是静态文件或者一个单页应用 (SPA)，通过 Nginx 提供服务。 一个后端 API：使用 Node.js 编写，处理业务逻辑。 一个数据库：使用 MySQL 存储数据。 一个缓存"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://example.com/images/post/docker/docker.jpg"><meta property="article:author" content="937bb"><meta property="article:tag" content="937bb"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/images/post/docker/docker.jpg"><meta name="description" content="🐳 构建一个完整的应用栈：实战与最佳实践指南想象一下，你正在开发一个简单的 Web 应用，它包含：  一个前端：可能是静态文件或者一个单页应用 (SPA)，通过 Nginx 提供服务。 一个后端 API：使用 Node.js 编写，处理业务逻辑。 一个数据库：使用 MySQL 存储数据。 一个缓存"><link rel="shortcut icon" href="/images/logo.jpg"><link rel="canonical" href="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?41346cfe263bfdaf732d04b03bf5c0c7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'http://101.126.93.9:8080/',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"631d63d3c7784afba5072a6ffc55586b","mailMd5":""},
+  music_page_default: "custom",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: 937bb","link":"链接: ","source":"来源: 937blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '937blog',
+  title: '🐳 构建一个完整的应用栈：实战与最佳实践指南',
+  postAI: '',
+  pageFillDescription: '🐳 构建一个完整的应用栈：实战与最佳实践指南, 🏗️ 实际应用栈示例：一个 docker-compose.yml 文件搞定一切！, 🏆 Docker Compose 编写的最佳实践构建一个完整的应用栈实战与最佳实践指南想象一下你正在开发一个简单的应用它包含一个前端可能是静态文件或者一个单页应用通过提供服务一个后端使用编写处理业务逻辑一个数据库使用存储数据一个缓存使用提高性能这是一个非常常见的应用架构如果不使用你需要分别安装和配置环境处理它们之间的连接版本冲突启动顺序等等非常繁琐有了这一切都变得简单起来我们可以用一个文件来描述整个应用栈然后用一个命令搞定启动和管理实际应用栈示例一个文件搞定一切让我们来看一个完整的文件它定义并编排上面提到的四个服务文件名这是一个典型的开发环境配置示例使用较新的文件格式版本支持健康检查条件等特性定义我们的应用栈包含的所有服务前端服务比如使用提供静态文件或代理到后端从本地的目录构建镜像假设里面有你的前端代码和可以指定一个用于开发的如果是生产环境你可能会直接使用预构建好的镜像给容器一个易记的名字可选开发环境方便端口映射让外部你的浏览器能访问到前端服务将宿主机的端口映射到容器内部的端口挂载本地代码方便开发时热更新仅开发环境常用将宿主机目录你的前端构建输出挂载到容器的静态文件目录如果需要修改配置也可以挂载配置文件前端可能需要后端启动才能完全工作比如通过后端获取数据这里我们假设前端只是提供静态文件不直接依赖的启动但如果前端需要调用后端可以加上依赖但通常是给后端依赖数据库缓存用的如果前端是一个启动时不直接依赖后端但运行中会调用这里的可以省略或者如果配置了异常退出时自动重启加入应用网络可以访问后端服务比如使用编写的从本地的目录构建镜像开发环境生产环境使用预构建镜像给容器起名字可选端口映射如果需要从外部直接访问后端比如调试如果后端只被或其他服务在内部网络访问这里可以不映射端口将宿主机的端口映射到容器内部应用监听的端口挂载本地代码和开发环境将宿主机目录挂载到容器目录特殊处理应用的依赖通常很庞大且宿主机和容器的架构可能不同推荐使用一个匿名卷或命名卷来存放这样既能保证依赖在容器里又能避免本地挂载覆盖容器里安装好的依赖这是一个匿名卷的简写表示挂载一个匿名卷到如果在容器构建时就存在这个匿名卷会隐藏它更好的做法是在里将安装到另一个目录或者在里使用命名卷比如但匿名卷的写法在开发中也常见用于隔离依赖持久化日志目录设置环境变量将数据库和缓存的连接信息传给后端应用或者数据库连接信息通过服务名访问因为它们在同一个网络从或宿主机环境变量获取如果没设置则默认从或宿主机环境变量获取缓存连接信息后端依赖数据库和缓存并且需要它们已经健康就绪等待容器健康等待容器健康后端应用自身的健康检查假设后端提供接口每秒检查一次超时秒失败次后标记启动后秒内检查失败不计入重试异常退出时自动重启加入应用网络可以访问和在生产环境会加上资源限制数据库服务比如使用官方镜像给容器起名字可选持久化数据库数据使用命名卷将命名卷挂载到容器里存放数据的地方设置数据库的环境变量初始化密码数据库名等从或宿主机环境变量获取密码自动创建的数据库名如果需要非用户如果需要非用户密码如果需要从宿主机使用客户端工具如连接数据库可以映射端口慎重这会将数据库暴露给宿主机所有进程生产环境不推荐直接映射应通过跳板机或内网访问数据库健康检查非常重要依赖它的状态检查数据库连接是否正常每秒检查一次超时秒失败次后标记启动后秒内检查失败不计入重试给数据库初始化时间异常退出时自动重启加入应用网络供访问数据库服务可能需要较多资源缓存服务比如使用官方镜像版本更小给容器起名字可选持久化数据如果需要通常是或文件如果只是作为临时缓存数据不重要可以不挂载卷默认将数据存放在目录如果需要从宿主机使用客户端工具连接可以映射端口同数据库一样生产环境慎重直接映射健康检查检查是否响应命令每秒检查一次超时秒失败次后标记启动后秒内检查失败不计入重试异常退出时自动重启加入应用网络供访问通常不需要太多资源除非数据量非常大在顶层声明命名卷用于持久化数据数据卷数据卷如果后端需要持久化日志声明这个卷在顶层声明自定义网络让服务能通过服务名互相通信声明一个叫的网络是默认类型通常不用写为了让上面的示例能运行你还需要在项目根目录创建和两个子文件夹在文件夹里创建一个和一个简单的文件夹模拟前端构建输出里可以使用镜像并将文件夹内容复制进去在文件夹里创建一个和一个简单的应用入口文件比如可以使用镜像将代码复制进去安装依赖并定义启动命令在项目根目录创建一个文件至少包含和运行方法进入项目根目录确保或正在运行执行命令启动整个应用栈后台运行强制重新构建和服务的镜像因为它们使用了使用查看服务状态确认它们都处于状态访问如果前端映射到或如果直接访问后端来测试你的应用使用查看日志完成后使用停止并清理编写的最佳实践通过上面的例子我们已经综合运用了大部分学过的知识为了写出更清晰更易于维护的文件这里有一些通用的最佳实践建议使用最新稳定版本在文件顶部指定并尽量使用较新的稳定版本比如以便使用最新的功能和语法结构清晰服务独立将不同的服务定义在下面每个服务块负责一个独立的组件服务之间通过网络互相通信使用自定义网络始终在顶层声明自定义网络并让相关的服务加入同一个网络这比使用默认网络更清晰也方便隔离服务在同一个自定义网络中可以通过服务名互相访问无需查找地址持久化重要数据使用命名卷对于数据库数据上传文件重要的日志等需要长期保存的数据一定要使用顶层声明的命名卷命名卷由管理生命周期独立于容器能有效防止数据丢失避免在生产环境使用绑定挂载来持久化应用数据开发环境利用绑定挂载在开发环境中利用绑定挂载将本地代码同步到容器实现代码修改后的快速反馈热更新提高开发效率环境变量管理配置将应用的配置信息数据库连接密钥等通过或传递给容器使用语法引用环境变量利用文件加载默认变量在项目根目录创建文件存放非敏感的默认环境变量使用多文件管理不同环境对于开发测试生产等不同环境创建基础文件和环境覆盖文件通过来组合使用定义清晰的服务依赖使用来表达服务间的启动顺序依赖配置并结合为关键服务尤其是数据库缓存下游配置并在依赖它们的服务中使用来确保依赖的服务真正就绪后再启动当前服务这是构建稳定应用栈的关键在生产环境配置资源限制使用或来限制容器可用的和内存防止资源耗尽提高系统稳定性合理配置日志驱动根据环境需求配置驱动开发环境限制日志文件大小生产环境通常发送到集中的日志收集系统避免在生产环境使用固定的容器名不适合和多实例部署主要用于开发环境方便手动操作编写清晰的负责编排负责构建单个服务镜像编写高效安全的是构建优秀应用的基础注释在复杂的文件中添加注释解释各个部分的作用和配置提高可读性遵循这些最佳实践你的文件将不仅能工作而且会更易于理解管理和维护无论是你自己还是团队的其他成员都能更顺畅地使用它来开发和部署应用本章小结我们通过一个完整的应用栈示例将之前学到的等字段和概念综合应用了一遍同时我们也总结了编写的条最佳实践它们是提升你文件质量的重要指南恭喜你到这里你已经掌握了使用定义配置和管理一个多服务应用栈的核心技能你现在可以自信地使用来容器化你的应用项目了的世界远不止还有等更强大的容器编排工具但是入门容器化应用编排的绝佳起点它简洁易用非常适合开发环境和简单的生产部署希望这个系列的教程对你有帮助祝你在容器化之旅中一切顺利',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-07 14:29:24',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/images/logo.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">937blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-console-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 1.05rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">教程<sup>11</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">11</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Docker/" itemprop="url">Docker</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>教程</span></a><a class="article-meta__tags" href="/tags/Docker/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Docker</span></a></span></div></div><h1 class="post-title" itemprop="name headline">🐳 构建一个完整的应用栈：实战与最佳实践指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-06-07T06:30:00.000Z" title="发表于 2025-06-07 14:30:00">2025-06-07</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-06-07T06:29:24.470Z" title="更新于 2025-06-07 14:29:24">2025-06-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">3.5k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="🐳 构建一个完整的应用栈：实战与最佳实践指南"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为济南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>济南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/images/post/docker/docker.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/"><header><a class="post-meta-categories" href="/categories/Docker/" itemprop="url">Docker</a><a href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url">教程</a><a href="/tags/Docker/" tabindex="-1" itemprop="url">Docker</a><h1 id="CrawlerTitle" itemprop="name headline">🐳 构建一个完整的应用栈：实战与最佳实践指南</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">937bb</span><time itemprop="dateCreated datePublished" datetime="2025-06-07T06:30:00.000Z" title="发表于 2025-06-07 14:30:00">2025-06-07</time><time itemprop="dateCreated datePublished" datetime="2025-06-07T06:29:24.470Z" title="更新于 2025-06-07 14:29:24">2025-06-07</time></header><h1 id="🐳-构建一个完整的应用栈：实战与最佳实践指南"><a href="#🐳-构建一个完整的应用栈：实战与最佳实践指南" class="headerlink" title="🐳 构建一个完整的应用栈：实战与最佳实践指南"></a>🐳 构建一个完整的应用栈：实战与最佳实践指南</h1><p>想象一下，你正在开发一个简单的 Web 应用，它包含：</p>
+<ul>
+<li>一个<strong>前端</strong>：可能是静态文件或者一个单页应用 (SPA)，通过 Nginx 提供服务。</li>
+<li>一个<strong>后端 API</strong>：使用 Node.js 编写，处理业务逻辑。</li>
+<li>一个<strong>数据库</strong>：使用 MySQL 存储数据。</li>
+<li>一个<strong>缓存</strong>：使用 Redis 提高性能。</li>
+</ul>
+<p>这是一个非常常见的应用架构。如果不使用 Docker，你需要分别安装和配置 Nginx、Node.js 环境、MySQL、Redis，处理它们之间的连接、版本冲突、启动顺序等等，非常繁琐。</p>
+<p>有了 Docker Compose，这一切都变得简单起来！我们可以用一个 <code>docker-compose.yml</code> 文件来描述整个应用栈，然后用一个命令搞定启动和管理。</p>
+<hr>
+<h2 id="🏗️-实际应用栈示例：一个-docker-compose-yml-文件搞定一切！"><a href="#🏗️-实际应用栈示例：一个-docker-compose-yml-文件搞定一切！" class="headerlink" title="🏗️ 实际应用栈示例：一个 docker-compose.yml 文件搞定一切！"></a>🏗️ 实际应用栈示例：一个 <code>docker-compose.yml</code> 文件搞定一切！</h2><p>让我们来看一个完整的 <code>docker-compose.yml</code> 文件，它定义并编排上面提到的四个服务：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件名: docker-compose.yml</span></span><br><span class="line"><span class="comment"># 这是一个典型的开发环境配置示例</span></span><br><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span> <span class="comment"># 使用较新的文件格式版本，支持健康检查条件等特性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># services: 定义我们的应用栈包含的所有服务</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># --- 前端服务 ---</span></span><br><span class="line">  <span class="comment"># 比如使用 Nginx 提供静态文件或代理到后端</span></span><br><span class="line">  <span class="attr">frontend:</span></span><br><span class="line">    <span class="comment"># build: 从本地的 ./frontend 目录构建镜像，假设里面有你的前端代码和 Dockerfile</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./frontend</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile.dev</span> <span class="comment"># 可以指定一个用于开发的 Dockerfile</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># image: 如果是生产环境，你可能会直接使用预构建好的镜像</span></span><br><span class="line">    <span class="comment"># image: my-frontend-nginx:latest</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># container_name: 给容器一个易记的名字 (可选，开发环境方便)</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_app_frontend</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ports: 端口映射，让外部（你的浏览器）能访问到前端服务</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span> <span class="comment"># 将宿主机的 80 端口映射到容器内部 Nginx 的 80 端口</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># volumes: 挂载本地代码，方便开发时热更新 (仅开发环境常用)</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="comment"># 将宿主机 ./frontend/dist 目录（你的前端构建输出）挂载到容器 Nginx 的静态文件目录</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./frontend/dist:/usr/share/nginx/html</span></span><br><span class="line">      <span class="comment"># 如果需要修改 Nginx 配置，也可以挂载配置文件</span></span><br><span class="line">      <span class="comment"># - ./frontend/nginx.conf:/etc/nginx/nginx.conf</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># depends_on: 前端可能需要后端启动才能完全工作 (比如通过后端 API 获取数据)</span></span><br><span class="line">    <span class="comment"># 这里我们假设前端只是提供静态文件，不直接依赖 backend 的启动，但如果前端需要调用后端API，可以加上依赖，但 service_healthy 通常是给后端依赖数据库/缓存用的</span></span><br><span class="line">    <span class="comment"># 如果前端是一个 SPA，启动时不直接依赖后端，但运行中会调用，这里的 depends_on 可以省略</span></span><br><span class="line">    <span class="comment"># depends_on:</span></span><br><span class="line">    <span class="comment">#   backend:</span></span><br><span class="line">    <span class="comment">#     condition: service_started # 或者 service_healthy 如果 backend 配置了 healthcheck</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span> <span class="comment"># 异常退出时自动重启</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span> <span class="comment"># 加入应用网络，可以访问 backend</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># --- 后端服务 ---</span></span><br><span class="line">  <span class="comment"># 比如使用 Node.js 编写的 API</span></span><br><span class="line">  <span class="attr">backend:</span></span><br><span class="line">    <span class="comment"># build: 从本地的 ./backend 目录构建镜像</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./backend</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile.dev</span> <span class="comment"># 开发环境 Dockerfile</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># image: 生产环境使用预构建镜像</span></span><br><span class="line">    <span class="comment"># image: my-backend-api:latest</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># container_name: 给容器起名字 (可选)</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_app_backend</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ports: 端口映射 (如果需要从外部直接访问后端，比如调试API)</span></span><br><span class="line">    <span class="comment"># 如果后端只被 frontend 或其他服务在内部网络访问，这里可以不映射端口</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3001:3000&quot;</span> <span class="comment"># 将宿主机的 3001 端口映射到容器内部 Node.js 应用监听的 3000 端口</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># volumes: 挂载本地代码和 node_modules (开发环境)</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="comment"># 将宿主机 ./backend 目录挂载到容器 /app 目录</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./backend:/app</span></span><br><span class="line">      <span class="comment"># 特殊处理 node_modules：Node.js 应用的依赖通常很庞大且宿主机和容器的架构可能不同</span></span><br><span class="line">      <span class="comment"># 推荐使用一个匿名卷或命名卷来存放 node_modules</span></span><br><span class="line">      <span class="comment"># 这样既能保证依赖在容器里，又能避免本地挂载覆盖容器里安装好的依赖</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/node_modules</span> <span class="comment"># 这是一个匿名卷的简写，表示挂载一个匿名卷到 /app/node_modules</span></span><br><span class="line">                          <span class="comment"># 如果 /app/node_modules 在容器构建时就存在，这个匿名卷会隐藏它</span></span><br><span class="line">                          <span class="comment"># 更好的做法是在 Dockerfile 里将 node_modules 安装到另一个目录，或者在 Compose 里使用命名卷</span></span><br><span class="line">                          <span class="comment"># 比如 volumes: - node_modules_volume:/app/node_modules</span></span><br><span class="line">                          <span class="comment"># 但匿名卷的写法在开发中也常见，用于隔离依赖</span></span><br><span class="line">      <span class="comment"># 持久化日志目录</span></span><br><span class="line">      <span class="comment"># - backend_logs:/app/logs</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># environment: 设置环境变量，将数据库和缓存的连接信息传给后端应用</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">NODE_ENV:</span> <span class="string">development</span> <span class="comment"># 或者 production</span></span><br><span class="line">      <span class="comment"># 数据库连接信息，通过服务名访问，因为它们在同一个网络</span></span><br><span class="line">      <span class="attr">DB_HOST:</span> <span class="string">db</span></span><br><span class="line">      <span class="attr">DB_USER:</span> <span class="string">$&#123;DB_USER:-root&#125;</span> <span class="comment"># 从 .env 或宿主机环境变量获取，如果没设置则默认 root</span></span><br><span class="line">      <span class="attr">DB_PASSWORD:</span> <span class="string">$&#123;DB_PASSWORD&#125;</span> <span class="comment"># 从 .env 或宿主机环境变量获取</span></span><br><span class="line">      <span class="attr">DB_NAME:</span> <span class="string">myapp_db</span></span><br><span class="line">      <span class="comment"># 缓存连接信息</span></span><br><span class="line">      <span class="attr">REDIS_HOST:</span> <span class="string">redis</span></span><br><span class="line">      <span class="attr">REDIS_PORT:</span> <span class="number">6379</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># depends_on: 后端依赖数据库和缓存，并且需要它们已经健康就绪</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="attr">db:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span> <span class="comment"># 等待 db 容器健康</span></span><br><span class="line">      <span class="attr">redis:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">service_healthy</span> <span class="comment"># 等待 redis 容器健康</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># healthcheck: 后端应用自身的健康检查</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;curl&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;http://localhost:3000/healthz&quot;</span>] <span class="comment"># 假设后端提供 /healthz 接口</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">15s</span> <span class="comment"># 每 15 秒检查一次</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span>   <span class="comment"># 超时 5 秒</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">3</span>    <span class="comment"># 失败 3 次后标记 unhealthy</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">30s</span> <span class="comment"># 启动后 30 秒内检查失败不计入重试</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span> <span class="comment"># 异常退出时自动重启</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span> <span class="comment"># 加入应用网络，可以访问 db 和 redis</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># resource limits: 在生产环境会加上资源限制</span></span><br><span class="line">    <span class="comment"># deploy:</span></span><br><span class="line">    <span class="comment">#   resources:</span></span><br><span class="line">    <span class="comment">#     limits:</span></span><br><span class="line">    <span class="comment">#       cpus: &#x27;1.0&#x27;</span></span><br><span class="line">    <span class="comment">#       memory: 1G</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># --- 数据库服务 ---</span></span><br><span class="line">  <span class="comment"># 比如 MySQL</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span> <span class="comment"># 使用官方 MySQL 镜像</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># container_name: 给容器起名字 (可选)</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_app_mysql_db</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># volumes: 持久化数据库数据！使用命名卷</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">db_data:/var/lib/mysql</span> <span class="comment"># 将 db_data 命名卷挂载到容器里 MySQL 存放数据的地方</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># environment: 设置数据库的环境变量 (初始化密码、数据库名等)</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">$&#123;DB_ROOT_PASSWORD&#125;</span> <span class="comment"># 从 .env 或宿主机环境变量获取 root 密码</span></span><br><span class="line">      <span class="attr">MYSQL_DATABASE:</span> <span class="string">myapp_db</span> <span class="comment"># 自动创建的数据库名</span></span><br><span class="line">      <span class="comment"># MYSQL_USER: myuser # 如果需要非 root 用户</span></span><br><span class="line">      <span class="comment"># MYSQL_PASSWORD: mypassword # 如果需要非 root 用户密码</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ports: 如果需要从宿主机使用客户端工具（如 Navicat）连接数据库，可以映射端口</span></span><br><span class="line">    <span class="comment"># - &quot;3306:3306&quot; # 慎重！这会将数据库暴露给宿主机所有进程，生产环境不推荐直接映射，应通过跳板机或内网访问</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># healthcheck: 数据库健康检查，非常重要，backend 依赖它的 healthy 状态</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;mysqladmin&quot;</span>, <span class="string">&quot;ping&quot;</span>, <span class="string">&quot;-h&quot;</span>, <span class="string">&quot;localhost&quot;</span>] <span class="comment"># 检查数据库连接是否正常</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">10s</span> <span class="comment"># 每 10 秒检查一次</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">5s</span>   <span class="comment"># 超时 5 秒</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">5</span>    <span class="comment"># 失败 5 次后标记 unhealthy</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">20s</span> <span class="comment"># 启动后 20 秒内检查失败不计入重试 (给数据库初始化时间)</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span> <span class="comment"># 异常退出时自动重启</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span> <span class="comment"># 加入应用网络，供 backend 访问</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># resource limits: 数据库服务可能需要较多资源</span></span><br><span class="line">    <span class="comment"># deploy:</span></span><br><span class="line">    <span class="comment">#   resources:</span></span><br><span class="line">    <span class="comment">#     limits:</span></span><br><span class="line">    <span class="comment">#       cpus: &#x27;2.0&#x27;</span></span><br><span class="line">    <span class="comment">#       memory: 2G</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># --- 缓存服务 ---</span></span><br><span class="line">  <span class="comment"># 比如 Redis</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis:7.2-alpine</span> <span class="comment"># 使用官方 Redis 镜像 (alpine 版本更小)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># container_name: 给容器起名字 (可选)</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">my_app_redis</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># volumes: 持久化 Redis 数据 (如果需要，通常是 RDB 或 AOF 文件)</span></span><br><span class="line">    <span class="comment"># 如果只是作为临时缓存，数据不重要，可以不挂载卷</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis_data:/data</span> <span class="comment"># Redis 默认将数据存放在 /data 目录</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ports: 如果需要从宿主机使用客户端工具连接 Redis，可以映射端口</span></span><br><span class="line">    <span class="comment"># - &quot;6379:6379&quot; # 同数据库一样，生产环境慎重直接映射</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># healthcheck: Redis 健康检查</span></span><br><span class="line">    <span class="attr">healthcheck:</span></span><br><span class="line">      <span class="attr">test:</span> [<span class="string">&quot;CMD&quot;</span>, <span class="string">&quot;redis-cli&quot;</span>, <span class="string">&quot;ping&quot;</span>] <span class="comment"># 检查 Redis 是否响应 PING 命令</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">5s</span>    <span class="comment"># 每 5 秒检查一次</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">3s</span>     <span class="comment"># 超时 3 秒</span></span><br><span class="line">      <span class="attr">retries:</span> <span class="number">3</span>      <span class="comment"># 失败 3 次后标记 unhealthy</span></span><br><span class="line">      <span class="attr">start_period:</span> <span class="string">10s</span> <span class="comment"># 启动后 10 秒内检查失败不计入重试</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span> <span class="comment"># 异常退出时自动重启</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app_network</span> <span class="comment"># 加入应用网络，供 backend 访问</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># resource limits: Redis 通常不需要太多资源 (除非数据量非常大)</span></span><br><span class="line">    <span class="comment"># deploy:</span></span><br><span class="line">    <span class="comment">#   resources:</span></span><br><span class="line">    <span class="comment">#     limits:</span></span><br><span class="line">    <span class="comment">#       cpus: &#x27;0.5&#x27;</span></span><br><span class="line">    <span class="comment">#       memory: 256M</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># volumes: 在顶层声明命名卷，用于持久化数据</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">db_data:</span> <span class="comment"># MySQL 数据卷</span></span><br><span class="line">  <span class="attr">redis_data:</span> <span class="comment"># Redis 数据卷</span></span><br><span class="line">  <span class="comment"># backend_logs: # 如果后端需要持久化日志，声明这个卷</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># networks: 在顶层声明自定义网络，让服务能通过服务名互相通信</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">app_network:</span> <span class="comment"># 声明一个叫 app_network 的网络</span></span><br><span class="line">    <span class="comment"># driver: bridge 是默认类型，通常不用写</span></span><br></pre></td></tr></table></figure>
+
+<p>为了让上面的 <code>docker-compose.yml</code> 示例能运行，你还需要：</p>
+<ol>
+<li>在项目根目录创建 <code>frontend</code> 和 <code>backend</code> 两个子文件夹。</li>
+<li>在 <code>frontend</code> 文件夹里，创建一个 <code>Dockerfile.dev</code> 和一个简单的 <code>dist</code> 文件夹（模拟前端构建输出）。<code>Dockerfile.dev</code> 里可以使用 <code>nginx:latest</code> 镜像，并将 <code>dist</code> 文件夹内容复制进去。</li>
+<li>在 <code>backend</code> 文件夹里，创建一个 <code>Dockerfile.dev</code> 和一个简单的 Node.js 应用入口文件（比如 <code>index.js</code>）。<code>Dockerfile.dev</code> 可以使用 <code>node:lts-alpine</code> 镜像，将代码复制进去，安装依赖，并定义启动命令。</li>
+<li>在项目根目录创建一个 <code>.env</code> 文件，至少包含 <code>DB_PASSWORD</code> 和 <code>DB_ROOT_PASSWORD</code>。</li>
+</ol>
+<p><strong>运行方法：</strong></p>
+<ol>
+<li>进入项目根目录。</li>
+<li>确保 Docker Desktop 或 Docker Engine 正在运行。</li>
+<li>执行命令启动整个应用栈：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d --build</span><br><span class="line"><span class="comment"># -d: 后台运行</span></span><br><span class="line"><span class="comment"># --build: 强制重新构建 frontend 和 backend 服务的镜像 (因为它们使用了 build)</span></span><br></pre></td></tr></table></figure></li>
+<li>使用 <code>docker-compose ps</code> 查看服务状态，确认它们都处于 <code>Up (healthy)</code> 状态。</li>
+<li>访问 <code>http://localhost</code> (如果前端映射到 80) 或 <code>http://localhost:3001</code> (如果直接访问后端) 来测试你的应用。</li>
+<li>使用 <code>docker-compose logs -f</code> 查看日志。</li>
+<li>完成后，使用 <code>docker-compose down</code> 停止并清理。</li>
+</ol>
+<hr>
+<h2 id="🏆-Docker-Compose-编写的最佳实践"><a href="#🏆-Docker-Compose-编写的最佳实践" class="headerlink" title="🏆 Docker Compose 编写的最佳实践"></a>🏆 Docker Compose 编写的最佳实践</h2><p>通过上面的例子，我们已经综合运用了大部分学过的知识。为了写出更清晰、更易于维护的 <code>docker-compose.yml</code> 文件，这里有一些通用的最佳实践建议：</p>
+<ol>
+<li><strong>使用最新稳定版本</strong>：在文件顶部指定 <code>version</code>，并尽量使用较新的稳定版本（比如 <code>3.8+</code>），以便使用最新的功能和语法。</li>
+<li><strong>结构清晰，服务独立</strong>：将不同的服务定义在 <code>services</code> 下面，每个服务块负责一个独立的组件。服务之间通过网络互相通信。</li>
+<li><strong>使用自定义网络</strong>：始终在顶层声明自定义网络 (<code>networks</code>)，并让相关的服务加入同一个网络。这比使用默认网络更清晰，也方便隔离。服务在同一个自定义网络中可以通过<strong>服务名</strong>互相访问，无需查找 IP 地址。</li>
+<li><strong>持久化重要数据使用命名卷</strong>：对于数据库数据、上传文件、重要的日志等需要长期保存的数据，一定要使用顶层声明的<strong>命名卷</strong> (<code>volumes</code>)。命名卷由 Docker 管理，生命周期独立于容器，能有效防止数据丢失。避免在生产环境使用绑定挂载来持久化应用数据。</li>
+<li><strong>开发环境利用绑定挂载</strong>：在开发环境中，利用绑定挂载 (<code>volumes: .:/app</code>) 将本地代码同步到容器，实现代码修改后的快速反馈（热更新），提高开发效率。</li>
+<li><strong>环境变量管理配置</strong>：将应用的配置信息（数据库连接、API 密钥等）通过 <code>environment</code> 或 <code>env_file</code> 传递给容器。使用 <code>$&#123;VAR_NAME&#125;</code> 语法引用环境变量。</li>
+<li><strong>利用 <code>.env</code> 文件加载默认变量</strong>：在项目根目录创建 <code>.env</code> 文件存放非敏感的默认环境变量。</li>
+<li><strong>使用多文件管理不同环境</strong>：对于开发、测试、生产等不同环境，创建基础文件 (<code>docker-compose.yml</code>) 和环境覆盖文件 (<code>docker-compose.dev.yml</code>, <code>docker-compose.prod.yml</code>)，通过 <code>docker-compose -f ... -f ... up</code> 来组合使用。</li>
+<li><strong>定义清晰的服务依赖</strong>：使用 <code>depends_on</code> 来表达服务间的启动顺序依赖。</li>
+<li><strong>配置 Healthcheck 并结合 <code>service_healthy</code></strong>：为关键服务（尤其是数据库、缓存、下游 API）配置 <code>healthcheck</code>，并在依赖它们的服务中使用 <code>depends_on: condition: service_healthy</code> 来确保依赖的服务真正就绪后再启动当前服务。这是构建稳定应用栈的关键。</li>
+<li><strong>在生产环境配置资源限制</strong>：使用 <code>deploy.resources.limits</code> 或 <code>cpu_quota</code>, <code>mem_limit</code> 来限制容器可用的 CPU 和内存，防止资源耗尽，提高系统稳定性。</li>
+<li><strong>合理配置日志驱动</strong>：根据环境需求配置 <code>logging</code> 驱动。开发环境限制日志文件大小，生产环境通常发送到集中的日志收集系统。</li>
+<li><strong>避免在生产环境使用 <code>container_name</code></strong>：固定的容器名不适合 Scale Up 和多实例部署，主要用于开发环境方便手动操作。</li>
+<li><strong>编写清晰的 Dockerfile</strong>：Docker Compose 负责编排，Dockerfile 负责构建单个服务镜像。编写高效、安全的 Dockerfile 是构建优秀 Docker 应用的基础。</li>
+<li><strong>注释</strong>：在复杂的 <code>docker-compose.yml</code> 文件中添加注释，解释各个部分的作用和配置，提高可读性。</li>
+</ol>
+<p>遵循这些最佳实践，你的 Docker Compose 文件将不仅能工作，而且会更易于理解、管理和维护，无论是你自己还是团队的其他成员，都能更顺畅地使用它来开发和部署应用。</p>
+<hr>
+<p><strong>本章小结</strong></p>
+<p>我们通过一个完整的 Web 应用栈示例，将之前学到的 <code>version</code>, <code>services</code>, <code>volumes</code>, <code>networks</code>, <code>build</code>, <code>image</code>, <code>ports</code>, <code>environment</code>, <code>depends_on: service_healthy</code>, <code>healthcheck</code>, <code>restart</code>, <code>container_name</code>, <code>deploy.resources</code> 等字段和概念综合应用了一遍。</p>
+<p>同时，我们也总结了 Docker Compose 编写的 15 条最佳实践，它们是提升你 Docker Compose 文件质量的重要指南。</p>
+<p>恭喜你！到这里，你已经掌握了使用 Docker Compose 定义、配置和管理一个多服务应用栈的核心技能。你现在可以自信地使用 Docker Compose 来容器化你的应用项目了！</p>
+<p>Docker 的世界远不止 Docker Compose，还有 Docker Swarm、Kubernetes 等更强大的容器编排工具。但 Docker Compose 是入门容器化应用编排的绝佳起点，它简洁易用，非常适合开发环境和简单的生产部署。</p>
+<p>希望这个系列的教程对你有帮助！祝你在容器化之旅中一切顺利！</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">937bb</div><div class="post-copyright__author_desc">一个爱好编程的小白</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/')">🐳 构建一个完整的应用栈：实战与最佳实践指南</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=🐳 构建一个完整的应用栈：实战与最佳实践指南&amp;url=http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/&amp;pic=/images/post/docker/docker.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">937blog</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%95%99%E7%A8%8B/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>教程<span class="tagsPageCount">11</span></a><a class="post-meta__box__tags" href="/tags/Docker/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Docker<span class="tagsPageCount">9</span></a></div></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolumes%E3%80%81networks%E3%80%81configs%E3%80%81secrets/" title="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 字段详解篇（一）：服务配置（services）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%95%99%E7%A8%8B%EF%BC%88%E5%90%AB%E5%AD%97%E6%AE%B5%E6%B3%A8%E9%87%8A%EF%BC%89/" title="🐳 Dockerfile + Docker Compose 教程（含字段注释）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Dockerfile + Docker Compose 教程（含字段注释）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/" title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</div></div></a></div><div><a href="/2025/06/06/Docker/Docker%20%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89/" title="Docker 从零开始入门教程（超详细）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-06</div><div class="title">Docker 从零开始入门教程（超详细）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">937bb</h1><div class="author-info__desc">一个爱好编程的小白</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/anzhiyu-c" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/372204786" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>欢迎</span></div><div class="announcement_content"><span>👋🏻 Hi，我是937bb，欢迎你！</span><br> <span>❓ 如有问题欢迎评论区交流！</span><br> <span>😫 页面异常？尝试<kbd>Ctrl</kbd>+<kbd>F5</kbd></span><br> <span>📧 如需联系我：<a href="mailto:ruoms@qq.com"><b>发送邮件🚀</b></a></span> <div id="welcome-info"></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%90%B3-%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E5%BA%94%E7%94%A8%E6%A0%88%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97"><span class="toc-number">1.</span> <span class="toc-text">🐳 构建一个完整的应用栈：实战与最佳实践指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%97%EF%B8%8F-%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E6%A0%88%E7%A4%BA%E4%BE%8B%EF%BC%9A%E4%B8%80%E4%B8%AA-docker-compose-yml-%E6%96%87%E4%BB%B6%E6%90%9E%E5%AE%9A%E4%B8%80%E5%88%87%EF%BC%81"><span class="toc-number">1.1.</span> <span class="toc-text">🏗️ 实际应用栈示例：一个 docker-compose.yml 文件搞定一切！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%86-Docker-Compose-%E7%BC%96%E5%86%99%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.2.</span> <span class="toc-text">🏆 Docker Compose 编写的最佳实践</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" title="🐳 构建一个完整的应用栈：实战与最佳实践指南"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 构建一个完整的应用栈：实战与最佳实践指南"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" title="🐳 构建一个完整的应用栈：实战与最佳实践指南">🐳 构建一个完整的应用栈：实战与最佳实践指南</a><time datetime="2025-06-07T06:29:24.470Z" title="更新于 2025-06-07 14:29:24">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/" title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%AD%97%E6%AE%B5/" title="🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段">🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段</a><time datetime="2025-06-07T06:01:00.598Z" title="更新于 2025-06-07 14:01:00">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</a><time datetime="2025-06-07T05:15:07.967Z" title="更新于 2025-06-07 13:15:07">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战">🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战</a><time datetime="2025-06-07T04:58:06.145Z" title="更新于 2025-06-07 12:58:06">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）">🐳 Docker Compose 字段详解篇（一）：服务配置（services）</a><time datetime="2025-06-07T04:55:32.539Z" title="更新于 2025-06-07 12:55:32">2025-06-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2025 By <a class="footer-bar-link" href="/" title="937bb" target="_blank">937bb</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="鲁ICP备2024128229号-1">鲁ICP备2024128229号-1</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 0.88rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">教程<sup>11</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script> // 消除控制台打印
+ var HoldLog = console.log;
+ console.log = function () {};
+ let now1 = new Date();
+ queueMicrotask(() => {
+   const Log = function () {
+     HoldLog.apply(console, arguments);
+   }; //在恢复前输出日志
+   const grt = new Date("01/01/2025 00:00:00"); //此处修改你的建站时间或者网站上线时间
+   now1.setTime(now1.getTime() + 250);
+   const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+   const dnum = Math.floor(days);
+   const ascll = [
+     `欢迎使用安知鱼!`,
+     `生活明朗, 万物可爱`,
+     `
+ █████╗ ██████╗ ███████╗██████╗ ██████╗ 
+██╔══██╗╚════██╗╚════██║██╔══██╗██╔══██╗
+╚██████║ █████╔╝    ██╔╝██████╔╝██████╔╝
+ ╚═══██║ ╚═══██╗   ██╔╝ ██╔══██╗██╔══██╗
+ █████╔╝██████╔╝   ██║  ██████╔╝██████╔╝
+ ╚════╝ ╚═════╝    ╚═╝  ╚═════╝ ╚═════╝ 
+     `,
+     "已上线",
+     dnum,
+     "天",
+     //- "©2020 By 安知鱼 V1.6.14",
+   ];
+   const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+   setTimeout(
+     Log.bind(
+       console,
+       `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       ""
+     )
+   );
+   setTimeout(
+     Log.bind(
+       console,
+       `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+       "color:white; background-color:#4fd953",
+       "",
+       "",
+       'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(
+       console,
+       //- "%c ⚡ Powered by 安知鱼 %c 你正在访问 937bb 的博客.",
+       "color:white; background-color:#f0ad4e",
+       ""
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+   );
+ });</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'http://101.126.93.9:8080/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        const $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+        $dom2.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml2 = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+    $dom2 && ($dom2.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom2)
+  }
+
+    const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a  href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `          
+        <a  class="rightc"  href='${array[i].url}' title='${array[i].content}'>
+        <div class='comment'>
+          <div class='title'>${array[i].content}</div>
+          <div class='userName'>${array[i].nick} - ${anzhiyu.diffDate(array[i].date, true)}</time></div>
+          </div>
+
+        </a>
+        </div>`
+      }
+
+        //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+    if (document.querySelector('#card-console-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml2(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
