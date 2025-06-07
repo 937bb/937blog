@@ -1,10 +1,14 @@
 ---
 title: Docker 从零开始入门教程（超详细）
-date: 2025-06-06
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 3065
+date: 2025-06-06 00:00:00
 ---
 
 # 🚢 Docker 从零开始入门教程（超详细）

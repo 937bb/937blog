@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 常用命令篇（三）：运行、管理和停止你的应用
-date: 2025-06-07 12:55
+title: "\U0001F433 Docker Compose 常用命令篇（三）：运行、管理和停止你的应用"
+date: '2025-06-07 12:55'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 34934
 ---
 
 # 🐳 Docker Compose 命令宝典 - 让你的应用栈“动”起来！

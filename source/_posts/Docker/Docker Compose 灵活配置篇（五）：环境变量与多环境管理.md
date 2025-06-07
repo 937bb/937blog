@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理
-date: 2025-06-07 13:00
+title: "\U0001F433 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"
+date: '2025-06-07 13:00'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 58030
 ---
 
 # 🐳 配置随环境而变：环境变量与多环境 Docker Compose 实战！

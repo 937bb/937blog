@@ -1,10 +1,14 @@
 ---
-title: 🐳 构建一个完整的应用栈：实战与最佳实践指南
-date: 2025-06-07 14:30
+title: "\U0001F433 构建一个完整的应用栈：实战与最佳实践指南"
+date: '2025-06-07 14:30'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 45458
 ---
 
 # 🐳 构建一个完整的应用栈：实战与最佳实践指南

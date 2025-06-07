@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战
-date: 2025-06-07 12:58
+title: "\U0001F433 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"
+date: '2025-06-07 12:58'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 51177
 ---
 
 # 🐳 确保你的服务“准备好了”再启动 - `depends_on` 与 `healthcheck` 联动！

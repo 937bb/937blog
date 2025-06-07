@@ -1,10 +1,14 @@
 ---
-title: GIT常用命令1 - 🧠 Git 使用教程（附公司级协作流程）
-date: 2025-06-06
+title: "GIT常用命令1 - \U0001F9E0 Git 使用教程（附公司级协作流程）"
 top_img: /images/post/git/git.jpg
 cover: /images/post/git/git.jpg
-categories: ["GIT"]
-tags: ["教程","GIT"]
+categories:
+  - GIT
+tags:
+  - 教程
+  - GIT
+abbrlink: 28112
+date: 2025-06-06 00:00:00
 ---
 
 

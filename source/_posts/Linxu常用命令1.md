@@ -1,10 +1,14 @@
 ---
-title: Linux常用命令1 - 🐧 Linux 常用命令大全（小白入门 + 日常运维）
-date: 2025-06-06
+title: "Linux常用命令1 - \U0001F427 Linux 常用命令大全（小白入门 + 日常运维）"
 top_img: /images/post/linux/linux.jpg
 cover: /images/post/linux/linux.jpg
-categories: ["Linux"]
-tags: ["教程","Linux"]
+categories:
+  - Linux
+tags:
+  - 教程
+  - Linux
+abbrlink: 56257
+date: 2025-06-06 00:00:00
 ---
 
 

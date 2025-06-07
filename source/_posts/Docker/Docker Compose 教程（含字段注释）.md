@@ -1,10 +1,14 @@
 ---
-title: 🐳 Dockerfile + Docker Compose 教程（含字段注释）
-date: 2025-06-07
+title: "\U0001F433 Dockerfile + Docker Compose 教程（含字段注释）"
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 48960
+date: 2025-06-07 00:00:00
 ---
 
 # 🐳 Dockerfile + Docker Compose 教程（含字段注释）

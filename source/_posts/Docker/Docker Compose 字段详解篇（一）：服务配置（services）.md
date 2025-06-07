@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 字段详解篇（一）：服务配置（services）
-date: 2025-06-07 10:24
+title: "\U0001F433 Docker Compose 字段详解篇（一）：服务配置（services）"
+date: '2025-06-07 10:24'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 7671
 ---
 
 # 🐳 服务配置（services）全面解读 - 写给小白的超详细指南！

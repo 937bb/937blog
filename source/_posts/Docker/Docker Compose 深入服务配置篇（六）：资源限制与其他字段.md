@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 深入服务配置篇（六）：资源限制与其他字段
-date: 2025-06-07 14:00
+title: "\U0001F433 Docker Compose 深入服务配置篇（六）：资源限制与其他字段"
+date: '2025-06-07 14:00'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 37214
 ---
 
 # 🐳 精细控制你的容器：资源限制、命名与日志配置！

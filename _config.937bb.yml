@@ -184,7 +184,7 @@ post_meta:
     categories: true # true or false 主页是否显示分类
     tags: true # true or false 主页是否显示标籤
     label: true # true or false 显示描述性文字
-    
+
   post:
     date_type: both # created or updated or both 文章页日期是创建日或者更新日或都显示
     date_format: date # date/relative 显示日期还是相对日期
@@ -566,7 +566,6 @@ footer:
 # https://tongji.baidu.com/web/welcome/login
 baidu_analytics: 41346cfe263bfdaf732d04b03bf5c0c7
 
-
 # Google Analytics
 # https://analytics.google.com/analytics/web/
 google_analytics:
@@ -821,10 +820,10 @@ aside:
   card_announcement:
     enable: true
     content: <span>👋🏻 Hi，我是937bb，欢迎你！</span><br>
-              <span>❓ 如有问题欢迎评论区交流！</span><br>
-              <span>😫 页面异常？尝试<kbd>Ctrl</kbd>+<kbd>F5</kbd></span><br>
-              <span>📧 如需联系我：<a href="mailto:ruoms@qq.com"><b>发送邮件🚀</b></a></span>
-              <div id="welcome-info"></div> # 必须项
+      <span>❓ 如有问题欢迎评论区交流！</span><br>
+      <span>😫 页面异常？尝试<kbd>Ctrl</kbd>+<kbd>F5</kbd></span><br>
+      <span>📧 如需联系我：<a href="mailto:ruoms@qq.com"><b>发送邮件🚀</b></a></span>
+      <div id="welcome-info"></div> # 必须项
   card_weixin:
     enable: false
     face: https://bu.dusays.com/2023/01/13/63c02edf44033.png
@@ -1364,3 +1363,20 @@ envelope_comment: #留言板
     comments: true
     top_img: false
     type: envelope
+
+# 优化seo
+abbrlink: # 新增abbrlink配置
+  alg: crc32 # 算法：crc16(default) and crc32
+  rep: hex # 进制：dec(default) and hex
+permalink: archives/:abbrlink.html #修改查找代码permalink
+
+# 站点地图
+sitemap:
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
+
+nofollow:
+  enable: true
+  field: post # site/post 全站/文章
+  exclude:

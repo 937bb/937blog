@@ -1,10 +1,14 @@
 ---
-title: 🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）
-date: 2025-06-07 10:25
+title: "\U0001F433 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"
+date: '2025-06-07 10:25'
 top_img: /images/post/docker/docker.jpg
 cover: /images/post/docker/docker.jpg
-categories: ["Docker"]
-tags: ["Docker","教程"]
+categories:
+  - Docker
+tags:
+  - Docker
+  - 教程
+abbrlink: 59411
 ---
 
 # 🐳 Docker Compose 顶层配置全面解读 - 搞懂 `yml` 文件的“骨架”！
