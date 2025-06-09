@@ -619,17 +619,17 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#F08000"
-  dark_main: "#F08000"
-  paginator: "#F08000"
-  button_hover: "#F08000"
+  main: "#00adb5"
+  dark_main: "#00adb5"
+  paginator: "#00adb5"
+  button_hover: "paginator"
   text_selection: "#2128bd"
   link_color: "var(--anzhiyu-fontcolor)"
   meta_color: "var(--anzhiyu-fontcolor)"
   hr_color: "#4259ef"
-  code_foreground: "#fe6e8e" # 代码块文字颜色
+  code_foreground: "#00adb5" # 代码块文字颜色
   dark_foreground: "#fff" # 暗主题 代码块文字颜色
-  code_background: "color-mix(in oklab,#F08000 20%,transparent)" # 代码块背景
+  code_background: "color-mix(in oklab,#00adb5 20%,transparent)" # 代码块背景
   dark_code_background: "#080808" # 暗主题 代码块背景
 
   toc_color: "#425AEF"
