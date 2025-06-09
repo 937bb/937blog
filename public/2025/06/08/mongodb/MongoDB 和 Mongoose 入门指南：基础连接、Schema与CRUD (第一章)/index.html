@@ -1,0 +1,634 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章) | 937blog</title><meta name="keywords" content="教程,MongoDB"><meta name="author" content="937bb"><meta name="copyright" content="937bb"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"><meta name="application-name" content="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta name="baidu-site-verification" content="codeva-JbHfEPrCHy"><meta property="og:type" content="article"><meta property="og:title" content="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"><meta property="og:url" content="http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/index.html"><meta property="og:site_name" content="937blog"><meta property="og:description" content="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)本文旨在为 Node.js 开发者提供一个关于如何使用 Mongoose 库操作 MongoDB 数据库的基础指南。我们将介绍 Mongoose 的基本概念、安装配置，以及如何进行最常见的数据操作：创建 (C"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://example.com/images/post/mongodb/mongodb.jpg"><meta property="article:author" content="937bb"><meta property="article:tag" content="937bb 技术博客"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://example.com/images/post/mongodb/mongodb.jpg"><meta name="description" content="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)本文旨在为 Node.js 开发者提供一个关于如何使用 Mongoose 库操作 MongoDB 数据库的基础指南。我们将介绍 Mongoose 的基本概念、安装配置，以及如何进行最常见的数据操作：创建 (C"><link rel="shortcut icon" href="/images/logo.jpg"><link rel="canonical" href="http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?41346cfe263bfdaf732d04b03bf5c0c7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'http://101.126.93.9:8080/',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"631d63d3c7784afba5072a6ffc55586b","mailMd5":""},
+  music_page_default: "custom",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: 937bb","link":"链接: ","source":"来源: 937blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '937blog',
+  title: 'MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)',
+  postAI: '',
+  pageFillDescription: 'MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章), 第一章：Mongoose 基础 - 连接数据库与数据模型, 1. 理解 MongoDB 和 Mongoose, 2. 环境准备与安装, 3. 连接到 MongoDB 数据库, 4. 定义数据结构：Schema (模式), 5. 新增数据：创建并保存文档 (Create), 6. 查询数据：查找文档 (Read), 7. 本章小结与使用场景, 后续内容和入门指南基础连接与第一章本文旨在为开发者提供一个关于如何使用库操作数据库的基础指南我们将介绍的基本概念安装配置以及如何进行最常见的数据操作创建和读取考虑到内容的详细性本教程将分章节进行第一章基础连接数据库与数据模型理解和是一种数据库它以文档的形式存储数据文档类似于对象具有灵活的结构多个文档组成一个集合类似于关系型数据库中的表是一个用于的对象模型工具它在应用和数据库之间提供了一个抽象层使用的主要原因包括定义数据结构允许你定义文档应有的结构字段类型和验证规则这有助于保证数据的一致性和可靠性数据验证在数据保存到数据库之前可以根据定义自动进行数据验证便捷的操作方法提供了丰富的易于使用的来执行数据库的增删改查等操作处理数据关系虽然是无模式的但在实际应用中数据之间常有关联提供了功能来方便地处理这些关联简单来说提供了一种更结构化和高效的方式来在应用中与交互环境准备与安装开始之前请确保你已经安装了和安装包管理器创建项目文件夹初始化项目这会创建一个文件安装这将库添加到你的项目依赖中连接到数据库在你的项目根目录下创建一个文件例如你需要一个运行中的数据库实例可以是本地安装的服务或者像这样的云服务编辑文件编写连接数据库的代码引入库数据库连接字符串格式通常为用户名密码主机名端口数据库名如果是本地默认安装且没有设置用户名密码通常是是你要连接创建的数据库名定义一个异步函数来处理数据库连接使用方法连接数据库第二个参数是可选的连接选项在新版中很多默认值已优化以下选项在新版本可能不再需要但旧代码中常见了解即可用于确保索引创建成功禁用等方法的旧行为数据库连接成功连接成功后你可以在这里开始定义并执行数据库操作连接失败时捕获错误并输出数据库连接失败可以选择在此处退出程序因为数据库是核心依赖调用连接函数开始连接监听连接断开事件可选数据库连接已断开监听进程终止信号优雅地关闭连接可选推荐在服务中添加连接因应用终止而断开代码说明引入库定义你的连接字符串包含数据库地址和数据库名称封装连接逻辑在一个异步函数中使用使异步代码更易读提供的连接数据库方法它返回一个因此可以使用等待其完成标准的错误处理机制用于捕获连接过程中可能发生的错误监听连接断开事件便于调试或记录状态监听操作系统的终止信号例如在程序退出前执行清理工作如关闭数据库连接运行如果一切顺利你应该会在控制台看到数据库连接成功定义数据结构模式连接成功后下一步是定义你存储在集合中的文档应该具有什么样的结构这通过的来完成在函数内部在连接成功后或者在一个单独的文件中定义继续在函数成功连接后的位置数据库连接成功定义模式描述了文档的字段字段类型默认值验证规则等字段名配置对象数据类型为字符串表示这个字段是必须的数据类型为数字可选设置数字的最小值验证可选设置数字的最大值验证表示这个字段的值在整个集合中必须是唯一的可选保存前将邮箱转换为小写数据类型为日期可选设置默认值为当前时间数据类型为布尔值可选设置默认值为还可以定义数组嵌套对象等复杂类型字符串数组用户定义完成基于创建模型是用来与特定集合交互的类或构造函数是的名字会自动将其转换为复数小写形式作为集合名即用户创建完成定义好后就可以使用这个来操作集合了后续的操作将使用这个连接数据库失败接下来的监听代码代码说明创建一个新的实例花括号内的对象定义了文档的结构键是字段名值是一个配置对象用于指定字段的类型和其他属性如是否必需是否唯一默认值验证规则如等基于创建第一个参数是的名称推荐使用单数大写字母开头的字符串会根据这个名称自动确定对应的集合名通过转换为小写复数例如对应集合对应集合创建的这里是变量是一个类用于创建实例或执行查询操作新增数据创建并保存文档有了我们就可以使用它来创建和保存新的文档到集合中有两种主要方法方法创建实例然后保存继续在定义后的位置数据库连接成功和定义用户和创建完成开始新增数据创建一个新的用户实例字段会自动转换为小写和会使用默认值调用实例的方法将文档保存到数据库返回一个用户保存成功如果保存失败例如验证失败字段缺失等用户保存失败新增数据结束后续的查询代码将放在这里连接数据库失败接下来的监听代码方法使用的方法更简洁继续在定义后的位置数据库连接成功和定义用户和创建完成开始新增数据使用方法直接创建并保存文档方法返回一个时返回新创建的文档同样会自动转换为小写用户通过保存成功尝试保存一个已经存在的用户会因为约束失败和的邮箱重复重复邮箱用户保存成功这行通常不会执行理论上会捕获到错误捕获方法中的错误用户通过保存失败新增数据结束后续的查询代码将放在这里连接数据库失败代码说明使用作为构造函数创建一个新的对象这个对象此时只存在于内存中实例的方法用于将内存中的对象保存到数据库这是一个异步操作的静态方法它是一个快捷方式等同于它接收一个对象或对象数组并直接在数据库中创建文档同样是异步操作在进行保存操作时务必使用捕获可能的错误特别是验证错误或的唯一索引错误运行你会看到用户成功保存或保存失败如邮箱重复的日志信息查询数据查找文档数据保存后下一步就是从数据库中读取数据提供了多种强大的查询方法继续在连接成功后的代码块里添加查询逻辑继续在新增数据后的位置数据库连接成功和定义用户和创建完成新增数据代码可以注释掉避免重复创建开始查询数据开始查询用户数据查询所有用户返回集合中所有文档的数组是查询条件对象空对象表示没有条件所有用户查询所有用户失败根据条件查询用户条件对象返回所有符合条件的文档数组查询大于等于的用户是查询操作符表示大于等于年龄的用户查询年龄用户失败查询是且小于的用户表示小于姓名是且年龄的用户查询姓名是且年龄的用户失败查询符合条件的第一个用户条件对象只返回匹配到的第一个文档如果没找到返回找到第一个活跃用户查询第一个活跃用户失败根据文档的查询每个文档自动生成的唯一标识符是的简写你需要一个实际存在的值来测试例如你可以从上面新增或查询返回的或对象中获取假设你知道一个用户的这里用一个示例实际使用时应从数据库获取这里替换为你数据库中某个用户的实际字符串替换成实际这里替换为你数据库中某个用户的实际字符串根据查询到的用户根据查询用户失败未提供实际的用户跳过按查询示例链式查询结合排序字段选择分页等查询所有用户按降序排列只返回和字段查找所有按字段排序表示降序表示升序选择返回和字段默认也返回可选限制返回文档数量为可选跳过前个文档用于分页执行查询使用时是可选的加上更明确用户按年龄降序只显示姓名和邮箱链式查询用户失败查询数据结束连接数据库失败接下来的监听代码代码说明的查询方法如通常都返回一个因此可以使用来等待查询结果用于查找所有匹配的文档是一个对象键值对对应字段和期望的值你可以使用的各种查询操作符如等在条件对象中构建更复杂的查询与类似但只返回第一个匹配到的文档如果没有任何文档匹配返回根据文档的字段查找特定文档这是的便捷方式链式调用的查询方法返回一个对象你可以在其上链式调用其他查询辅助方法如对结果进行排序为升序为降序选择要返回或排除的字段字段名前加表示排除该字段字段默认返回除非明确排除限制返回文档的最大数量跳过指定数量的文档常用于分页执行链式查询当使用时通常可以省略会自动执行但加上它有时能让代码意图更清晰运行你应该能在控制台看到各种查询的结果本章小结与使用场景在这一章中我们学习了的基本入门知识包括理解作为的的作用如何在项目中安装如何连接到数据库的核心概念数据结构定义操作数据库的工具如何定义文档的包括字段类型必需性唯一性默认值等属性如何使用创建并保存新的文档到数据库如何使用的不同方法从数据库中查询文档包括查询所有按条件查询按查询以及使用链式方法进行排序和字段选择这些基础知识是你使用进行后端开发的起点基本使用场景用户注册定义用户使用保存新用户数据博客列表页定义文章使用或查询文章列表并显示获取用户详情使用根据用户获取用户的详细信息查找特定数据根据条件如邮箱用户名等使用或查找符合条件的文档后续内容下一章我们将继续学习的数据更新和删除操作以及更深入的查询技巧和数据验证的使用请确保你动手实践了本章的代码这有助于你更好地理解的工作方式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-09 15:05:59',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/images/logo.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">937blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)" rel="external nofollow noreferrer">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/album/"><span> 图库</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" rel="external nofollow noreferrer" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-console-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 1.05rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 1.05rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MongoDB/" style="font-size: 1.05rem;">MongoDB<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">教程<sup>12</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/06/"><span class="card-archive-list-date">六月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">12</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);" rel="external nofollow noreferrer"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/MongoDB/" itemprop="url">MongoDB</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>教程</span></a><a class="article-meta__tags" href="/tags/MongoDB/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>MongoDB</span></a></span></div></div><h1 class="post-title" itemprop="name headline">MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-06-08T06:30:00.000Z" title="发表于 2025-06-08 14:30:00">2025-06-08</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-06-09T07:05:59.875Z" title="更新于 2025-06-09 15:05:59">2025-06-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">4.5k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为济南"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>济南</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/images/post/mongodb/mongodb.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/"><header><a class="post-meta-categories" href="/categories/MongoDB/" itemprop="url">MongoDB</a><a href="/tags/%E6%95%99%E7%A8%8B/" tabindex="-1" itemprop="url">教程</a><a href="/tags/MongoDB/" tabindex="-1" itemprop="url">MongoDB</a><h1 id="CrawlerTitle" itemprop="name headline">MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">937bb</span><time itemprop="dateCreated datePublished" datetime="2025-06-08T06:30:00.000Z" title="发表于 2025-06-08 14:30:00">2025-06-08</time><time itemprop="dateCreated datePublished" datetime="2025-06-09T07:05:59.875Z" title="更新于 2025-06-09 15:05:59">2025-06-09</time></header><h1 id="MongoDB-和-Mongoose-入门指南：基础连接、Schema与CRUD-第一章"><a href="#MongoDB-和-Mongoose-入门指南：基础连接、Schema与CRUD-第一章" class="headerlink" title="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"></a>MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</h1><p>本文旨在为 Node.js 开发者提供一个关于如何使用 Mongoose 库操作 MongoDB 数据库的基础指南。我们将介绍 Mongoose 的基本概念、安装配置，以及如何进行最常见的数据操作：创建 (Create) 和读取 (Read)。</p>
+<p>考虑到内容的详细性，本教程将分章节进行。</p>
+<h2 id="第一章：Mongoose-基础-连接数据库与数据模型"><a href="#第一章：Mongoose-基础-连接数据库与数据模型" class="headerlink" title="第一章：Mongoose 基础 - 连接数据库与数据模型"></a>第一章：Mongoose 基础 - 连接数据库与数据模型</h2><h3 id="1-理解-MongoDB-和-Mongoose"><a href="#1-理解-MongoDB-和-Mongoose" class="headerlink" title="1. 理解 MongoDB 和 Mongoose"></a>1. 理解 MongoDB 和 Mongoose</h3><p><strong>MongoDB</strong> 是一种 NoSQL 数据库，它以<strong>文档 (Document)</strong> 的形式存储数据。文档类似于 JSON 对象，具有灵活的结构。多个文档组成一个<strong>集合 (Collection)</strong>，类似于关系型数据库中的表。</p>
+<p><strong>Mongoose</strong> 是一个用于 Node.js 的 <strong>MongoDB 对象模型工具 (Object Data Modeling, ODM)</strong>。它在 Node.js 应用和 MongoDB 数据库之间提供了一个抽象层。使用 Mongoose 的主要原因包括：</p>
+<ul>
+<li><strong>定义数据结构 (Schemas)</strong>：Mongoose 允许你定义文档应有的结构、字段类型和验证规则，这有助于保证数据的一致性和可靠性。</li>
+<li><strong>数据验证 (Validation)</strong>：在数据保存到数据库之前，Mongoose 可以根据 Schema 定义自动进行数据验证。</li>
+<li><strong>便捷的操作方法 (Models)</strong>：Mongoose 提供了丰富的、易于使用的 API 来执行数据库的增、删、改、查等操作。</li>
+<li><strong>处理数据关系 (Population)</strong>：虽然 MongoDB 是无模式的，但在实际应用中数据之间常有关联。Mongoose 提供了 Population 功能来方便地处理这些关联。</li>
+</ul>
+<p>简单来说，Mongoose 提供了一种更结构化和高效的方式来在 Node.js 应用中与 MongoDB 交互。</p>
+<h3 id="2-环境准备与安装"><a href="#2-环境准备与安装" class="headerlink" title="2. 环境准备与安装"></a>2. 环境准备与安装</h3><p>开始之前，请确保你已经安装了 Node.js 和 npm（Node.js 安装包管理器）。</p>
+<ol>
+<li><strong>创建项目文件夹</strong>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> my-mongoose-app</span><br><span class="line"><span class="built_in">cd</span> my-mongoose-app</span><br></pre></td></tr></table></figure></li>
+<li><strong>初始化项目</strong>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+这会创建一个 <code>package.json</code> 文件。</li>
+<li><strong>安装 Mongoose</strong>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mongoose</span><br></pre></td></tr></table></figure>
+这将 Mongoose 库添加到你的项目依赖中。</li>
+</ol>
+<h3 id="3-连接到-MongoDB-数据库"><a href="#3-连接到-MongoDB-数据库" class="headerlink" title="3. 连接到 MongoDB 数据库"></a>3. 连接到 MongoDB 数据库</h3><p>在你的项目根目录下创建一个 JavaScript 文件，例如 <code>app.js</code>。</p>
+<p>你需要一个运行中的 MongoDB 数据库实例。可以是本地安装的 MongoDB 服务，或者像 MongoDB Atlas 这样的云服务。</p>
+<p>编辑 <code>app.js</code> 文件，编写连接数据库的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 引入 mongoose 库</span></span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">&#x27;mongoose&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// MongoDB 数据库连接字符串</span></span><br><span class="line"><span class="comment">// 格式通常为: mongodb://[用户名:密码@]主机名:端口/[数据库名]</span></span><br><span class="line"><span class="comment">// 如果是本地默认安装且没有设置用户名密码，通常是:</span></span><br><span class="line"><span class="keyword">const</span> dbURI = <span class="string">&#x27;mongodb://localhost:27017/myMongooseDatabase&#x27;</span>; <span class="comment">// myMongooseDatabase 是你要连接/创建的数据库名</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个异步函数来处理数据库连接</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectDB</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 使用 mongoose.connect() 方法连接数据库</span></span><br><span class="line">        <span class="comment">// 第二个参数是可选的连接选项，在新版 Mongoose 中很多默认值已优化</span></span><br><span class="line">        <span class="keyword">await</span> mongoose.<span class="title function_">connect</span>(dbURI, &#123;</span><br><span class="line">            <span class="comment">// 以下选项在新版本可能不再需要，但旧代码中常见，了解即可：</span></span><br><span class="line">            <span class="comment">// useNewUrlParser: true,</span></span><br><span class="line">            <span class="comment">// useUnifiedTopology: true,</span></span><br><span class="line">            <span class="comment">// useCreateIndex: true, // 用于确保索引创建成功</span></span><br><span class="line">            <span class="comment">// useFindAndModify: false // 禁用 findOneAndUpdate/deleteOne 等方法的旧行为</span></span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接成功!&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 连接成功后，你可以在这里开始定义 Schema、Model 并执行数据库操作</span></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="comment">// 连接失败时捕获错误并输出</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;MongoDB 数据库连接失败:&#x27;</span>, err);</span><br><span class="line">        <span class="comment">// 可以选择在此处退出程序，因为数据库是核心依赖</span></span><br><span class="line">        process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用连接函数开始连接</span></span><br><span class="line"><span class="title function_">connectDB</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听 mongoose 连接断开事件 (可选)</span></span><br><span class="line">mongoose.<span class="property">connection</span>.<span class="title function_">on</span>(<span class="string">&#x27;disconnected&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接已断开&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听 Node.js 进程终止信号，优雅地关闭 Mongoose 连接 (可选，推荐在服务中添加)</span></span><br><span class="line">process.<span class="title function_">on</span>(<span class="string">&#x27;SIGINT&#x27;</span>, <span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> mongoose.<span class="property">connection</span>.<span class="title function_">close</span>();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Mongoose 连接因应用终止而断开&#x27;</span>);</span><br><span class="line">    process.<span class="title function_">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码说明:</strong></p>
+<ul>
+<li><code>require(&#39;mongoose&#39;)</code>: 引入 Mongoose 库。</li>
+<li><code>dbURI</code>: 定义你的 MongoDB 连接字符串，包含数据库地址和数据库名称。</li>
+<li><code>async function connectDB() &#123; ... &#125;</code>: 封装连接逻辑在一个异步函数中，使用 <code>async/await</code> 使异步代码更易读。</li>
+<li><code>mongoose.connect(dbURI, &#123; ... &#125;)</code>: Mongoose 提供的连接数据库方法。它返回一个 Promise，因此可以使用 <code>await</code> 等待其完成。</li>
+<li><code>try...catch</code>: 标准的错误处理机制，用于捕获连接过程中可能发生的错误。</li>
+<li><code>mongoose.connection.on(&#39;disconnected&#39;, ...)</code>: 监听连接断开事件，便于调试或记录状态。</li>
+<li><code>process.on(&#39;SIGINT&#39;, ...)</code>: 监听操作系统的终止信号 (例如 Ctrl+C)，在程序退出前执行清理工作，如关闭数据库连接。</li>
+</ul>
+<p>运行 <code>node app.js</code>。如果一切顺利，你应该会在控制台看到 “MongoDB 数据库连接成功!”。</p>
+<h3 id="4-定义数据结构：Schema-模式"><a href="#4-定义数据结构：Schema-模式" class="headerlink" title="4. 定义数据结构：Schema (模式)"></a>4. 定义数据结构：Schema (模式)</h3><p>连接成功后，下一步是定义你存储在集合中的文档应该具有什么样的结构。这通过 Mongoose 的 <strong>Schema</strong> 来完成。</p>
+<p>在 <code>connectDB</code> 函数内部（在连接成功后），或者在一个单独的文件中定义 Schema：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js (继续在 connectDB 函数成功连接后的位置)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectDB</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> mongoose.<span class="title function_">connect</span>(dbURI, &#123; <span class="comment">/* options */</span> &#125;);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接成功!&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 1. 定义 Schema (模式) ===</span></span><br><span class="line">        <span class="comment">// Schema 描述了 MongoDB 文档的字段、字段类型、默认值、验证规则等</span></span><br><span class="line">        <span class="keyword">const</span> userSchema = <span class="keyword">new</span> mongoose.<span class="title class_">Schema</span>(&#123;</span><br><span class="line">            <span class="comment">// 字段名: &#123; 配置对象 &#125;</span></span><br><span class="line">            <span class="attr">name</span>: &#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="title class_">String</span>, <span class="comment">// 数据类型为字符串</span></span><br><span class="line">                <span class="attr">required</span>: <span class="literal">true</span> <span class="comment">// 表示这个字段是必须的</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">age</span>: &#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="title class_">Number</span>, <span class="comment">// 数据类型为数字</span></span><br><span class="line">                <span class="attr">min</span>: <span class="number">0</span>,      <span class="comment">// 可选：设置数字的最小值验证</span></span><br><span class="line">                <span class="attr">max</span>: <span class="number">120</span>     <span class="comment">// 可选：设置数字的最大值验证</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">email</span>: &#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">                <span class="attr">required</span>: <span class="literal">true</span>,</span><br><span class="line">                <span class="attr">unique</span>: <span class="literal">true</span>, <span class="comment">// 表示这个字段的值在整个集合中必须是唯一的</span></span><br><span class="line">                <span class="attr">lowercase</span>: <span class="literal">true</span> <span class="comment">// 可选：保存前将邮箱转换为小写</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">registerDate</span>: &#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="title class_">Date</span>, <span class="comment">// 数据类型为日期</span></span><br><span class="line">                <span class="attr">default</span>: <span class="title class_">Date</span>.<span class="property">now</span> <span class="comment">// 可选：设置默认值为当前时间</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">isActive</span>: &#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="title class_">Boolean</span>, <span class="comment">// 数据类型为布尔值</span></span><br><span class="line">                <span class="attr">default</span>: <span class="literal">true</span>  <span class="comment">// 可选：设置默认值为 true</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 还可以定义数组、嵌套对象等复杂类型</span></span><br><span class="line">            <span class="comment">// hobbies: [String], // 字符串数组</span></span><br><span class="line">            <span class="comment">// address: &#123;</span></span><br><span class="line">            <span class="comment">//     street: String,</span></span><br><span class="line">            <span class="comment">//     city: String</span></span><br><span class="line">            <span class="comment">// &#125;</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户 Schema 定义完成&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 2. 基于 Schema 创建 Model (模型) ===</span></span><br><span class="line">        <span class="comment">// Model 是 Mongoose 用来与特定集合交互的类或构造函数</span></span><br><span class="line">        <span class="comment">// &#x27;User&#x27; 是 Model 的名字。Mongoose 会自动将其转换为复数小写形式作为集合名，即 &#x27;users&#x27;</span></span><br><span class="line">        <span class="keyword">const</span> <span class="title class_">User</span> = mongoose.<span class="title function_">model</span>(<span class="string">&#x27;User&#x27;</span>, userSchema);</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户 Model 创建完成&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义好 Model 后，就可以使用 User 这个 Model 来操作 &#x27;users&#x27; 集合了</span></span><br><span class="line">        <span class="comment">// ... 后续的 CRUD 操作将使用这个 User Model ...</span></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接 MongoDB 数据库失败:&#x27;</span>, err);</span><br><span class="line">        process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 接下来的监听代码 ...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>代码说明:</strong></p>
+<ul>
+<li><code>new mongoose.Schema(&#123;...&#125;)</code>: 创建一个新的 Schema 实例。</li>
+<li>花括号内的对象定义了文档的结构。键是字段名，值是一个配置对象，用于指定字段的 <code>type</code> (类型) 和其他属性，如 <code>required</code> (是否必需)、<code>unique</code> (是否唯一)、<code>default</code> (默认值)、验证规则 (如 <code>min</code>, <code>max</code>) 等。</li>
+<li><code>mongoose.model(&#39;ModelName&#39;, schemaInstance)</code>: 基于 Schema 创建 Model。第一个参数是 Model 的名称，<strong>推荐使用单数、大写字母开头</strong>的字符串。Mongoose 会根据这个名称自动确定对应的集合名（通过转换为小写复数）。例如，’User’ 对应 ‘users’ 集合，’Product’ 对应 ‘products’ 集合。</li>
+<li>创建的 Model（这里是 <code>User</code> 变量）是一个类，用于创建 Document 实例或执行查询操作。</li>
+</ul>
+<h3 id="5-新增数据：创建并保存文档-Create"><a href="#5-新增数据：创建并保存文档-Create" class="headerlink" title="5. 新增数据：创建并保存文档 (Create)"></a>5. 新增数据：创建并保存文档 (Create)</h3><p>有了 Model (<code>User</code>)，我们就可以使用它来创建和保存新的文档到 <code>users</code> 集合中。</p>
+<p>有两种主要方法：</p>
+<p><strong>方法 1: 创建 Document 实例然后保存</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js (继续在 Model 定义后的位置)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectDB</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> mongoose.<span class="title function_">connect</span>(dbURI, &#123; <span class="comment">/* options */</span> &#125;);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接成功!&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Schema 和 Model 定义...</span></span><br><span class="line">        <span class="keyword">const</span> userSchema = <span class="keyword">new</span> mongoose.<span class="title class_">Schema</span>(&#123; <span class="comment">/* ... */</span> &#125;);</span><br><span class="line">        <span class="keyword">const</span> <span class="title class_">User</span> = mongoose.<span class="title function_">model</span>(<span class="string">&#x27;User&#x27;</span>, userSchema);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户 Schema 和 Model 创建完成&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 开始新增数据 ===</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建一个新的用户 Document 实例</span></span><br><span class="line">        <span class="keyword">const</span> newUser = <span class="keyword">new</span> <span class="title class_">User</span>(&#123;</span><br><span class="line">            <span class="attr">name</span>: <span class="string">&#x27;Alice&#x27;</span>,</span><br><span class="line">            <span class="attr">age</span>: <span class="number">28</span>,</span><br><span class="line">            <span class="attr">email</span>: <span class="string">&#x27;alice@example.com&#x27;</span>, <span class="comment">// email 字段会自动转换为小写</span></span><br><span class="line">            <span class="comment">// registerDate 和 isActive 会使用默认值</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用实例的 save() 方法将文档保存到数据库</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> savedUser = <span class="keyword">await</span> newUser.<span class="title function_">save</span>(); <span class="comment">// save() 返回一个 Promise</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户保存成功:&#x27;</span>, savedUser);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (saveErr) &#123;</span><br><span class="line">            <span class="comment">// 如果保存失败（例如，unique 验证失败，required 字段缺失等）</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;用户保存失败:&#x27;</span>, saveErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 新增数据结束 ===</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// ... 后续的查询代码将放在这里 ...</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接 MongoDB 数据库失败:&#x27;</span>, err);</span><br><span class="line">        process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 接下来的监听代码 ...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>方法 2: 使用 Model 的 create() 方法 (更简洁)</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js (继续在 Model 定义后的位置)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectDB</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> mongoose.<span class="title function_">connect</span>(dbURI, &#123; <span class="comment">/* options */</span> &#125;);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接成功!&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Schema 和 Model 定义...</span></span><br><span class="line">        <span class="keyword">const</span> userSchema = <span class="keyword">new</span> mongoose.<span class="title class_">Schema</span>(&#123; <span class="comment">/* ... */</span> &#125;);</span><br><span class="line">        <span class="keyword">const</span> <span class="title class_">User</span> = mongoose.<span class="title function_">model</span>(<span class="string">&#x27;User&#x27;</span>, userSchema);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户 Schema 和 Model 创建完成&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 开始新增数据 ===</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Model.create() 方法直接创建并保存文档</span></span><br><span class="line">        <span class="comment">// create() 方法返回一个 Promise，resolve 时返回新创建的文档</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> anotherUser = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line">                <span class="attr">name</span>: <span class="string">&#x27;Bob&#x27;</span>,</span><br><span class="line">                <span class="attr">age</span>: <span class="number">35</span>,</span><br><span class="line">                <span class="attr">email</span>: <span class="string">&#x27;BOB@EXAMPLE.COM&#x27;</span>, <span class="comment">// 同样会自动转换为小写</span></span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户通过 create 保存成功:&#x27;</span>, anotherUser);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 尝试保存一个 email 已经存在的用户，会因为 unique 约束失败</span></span><br><span class="line">            <span class="keyword">const</span> duplicateEmailUser = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line">                 <span class="attr">name</span>: <span class="string">&#x27;Charlie&#x27;</span>,</span><br><span class="line">                 <span class="attr">age</span>: <span class="number">22</span>,</span><br><span class="line">                 <span class="attr">email</span>: <span class="string">&#x27;alice@example.com&#x27;</span> <span class="comment">// 和 Alice 的邮箱重复</span></span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;重复邮箱用户保存成功 (这行通常不会执行):&#x27;</span>, duplicateEmailUser); <span class="comment">// 理论上会捕获到错误</span></span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (createErr) &#123;</span><br><span class="line">            <span class="comment">// 捕获 create 方法中的错误</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;用户通过 create 保存失败:&#x27;</span>, createErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 新增数据结束 ===</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// ... 后续的查询代码将放在这里 ...</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接 MongoDB 数据库失败:&#x27;</span>, err);</span><br><span class="line">        process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码说明:</strong></p>
+<ul>
+<li><code>new User(&#123;...&#125;)</code>: 使用 Model 作为构造函数创建一个新的 Document 对象。这个对象此时只存在于内存中。</li>
+<li><code>document.save()</code>: Document 实例的方法，用于将内存中的 Document 对象保存到数据库。这是一个异步操作。</li>
+<li><code>User.create(&#123;...&#125;)</code>: Model 的静态方法。它是一个快捷方式，等同于 <code>new User(&#123;...&#125;).save()</code>。它接收一个对象（或对象数组）并直接在数据库中创建文档。同样是异步操作。</li>
+<li><code>try...catch</code>: 在进行保存操作时，务必使用 <code>try...catch</code> 捕获可能的错误，特别是 Mongoose Schema 验证错误或 MongoDB 的唯一索引错误。</li>
+</ul>
+<p>运行 <code>node app.js</code>，你会看到用户成功保存或保存失败（如邮箱重复）的日志信息。</p>
+<h3 id="6-查询数据：查找文档-Read"><a href="#6-查询数据：查找文档-Read" class="headerlink" title="6. 查询数据：查找文档 (Read)"></a>6. 查询数据：查找文档 (Read)</h3><p>数据保存后，下一步就是从数据库中读取数据。Mongoose Model 提供了多种强大的查询方法。</p>
+<p>继续在连接成功后的代码块里添加查询逻辑：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js (继续在新增数据后的位置)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">connectDB</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> mongoose.<span class="title function_">connect</span>(dbURI, &#123; <span class="comment">/* options */</span> &#125;);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;MongoDB 数据库连接成功!&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Schema 和 Model 定义...</span></span><br><span class="line">        <span class="keyword">const</span> userSchema = <span class="keyword">new</span> mongoose.<span class="title class_">Schema</span>(&#123; <span class="comment">/* ... */</span> &#125;);</span><br><span class="line">        <span class="keyword">const</span> <span class="title class_">User</span> = mongoose.<span class="title function_">model</span>(<span class="string">&#x27;User&#x27;</span>, userSchema);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户 Schema 和 Model 创建完成&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 新增数据代码... (可以注释掉，避免重复创建)</span></span><br><span class="line">        <span class="comment">// const savedUser = await newUser.save();</span></span><br><span class="line">        <span class="comment">// const anotherUser = await User.create(&#123;...&#125;);</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 开始查询数据 ===</span></span><br><span class="line"></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n--- 开始查询用户数据 ---&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 查询所有用户</span></span><br><span class="line">        <span class="comment">// Model.find(&#123;&#125;) 返回集合中所有文档的数组</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> allUsers = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">find</span>(&#123;&#125;); <span class="comment">// &#123;&#125; 是查询条件对象，空对象表示没有条件</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;所有用户:&#x27;</span>, allUsers);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (findErr) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;查询所有用户失败:&#x27;</span>, findErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 根据条件查询用户</span></span><br><span class="line">        <span class="comment">// Model.find(&#123; 条件对象 &#125;) 返回所有符合条件的文档数组</span></span><br><span class="line">        <span class="comment">// 查询 age 大于等于 30 的用户</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> usersOver30 = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">find</span>(&#123; <span class="attr">age</span>: &#123; <span class="attr">$gte</span>: <span class="number">30</span> &#125; &#125;); <span class="comment">// $gte 是 MongoDB 查询操作符，表示 &#x27;大于等于&#x27;</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;年龄 &gt;= 30 的用户:&#x27;</span>, usersOver30);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (findErr) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;查询年龄 &gt;= 30 用户失败:&#x27;</span>, findErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">         <span class="comment">// 查询 name 是 &#x27;Alice&#x27; 且 age 小于 30 的用户</span></span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">             <span class="keyword">const</span> specificUser = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">find</span>(&#123; <span class="attr">name</span>: <span class="string">&#x27;Alice&#x27;</span>, <span class="attr">age</span>: &#123; <span class="attr">$lt</span>: <span class="number">30</span> &#125; &#125;); <span class="comment">// $lt 表示 &#x27;小于&#x27;</span></span><br><span class="line">             <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;姓名是 Alice 且年龄 &lt; 30 的用户:&quot;</span>, specificUser);</span><br><span class="line">         &#125; <span class="keyword">catch</span> (findErr) &#123;</span><br><span class="line">             <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;查询姓名是 Alice 且年龄 &lt; 30 的用户失败:&quot;</span>, findErr.<span class="property">message</span>);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3. 查询符合条件的第一个用户</span></span><br><span class="line">        <span class="comment">// Model.findOne(&#123; 条件对象 &#125;) 只返回匹配到的第一个文档，如果没找到返回 null</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> firstUser = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">findOne</span>(&#123; <span class="attr">isActive</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;找到第一个活跃用户:&#x27;</span>, firstUser);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (findOneErr) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;查询第一个活跃用户失败:&#x27;</span>, findOneErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4. 根据文档的 _id 查询 (每个 MongoDB 文档自动生成的唯一标识符)</span></span><br><span class="line">        <span class="comment">// Model.findById(id) 是 findOne(&#123; _id: id &#125;) 的简写</span></span><br><span class="line">        <span class="comment">// 你需要一个实际存在的 _id 值来测试</span></span><br><span class="line">        <span class="comment">// 例如，你可以从上面新增或查询返回的 savedUser 或 anotherUser 对象中获取 _id</span></span><br><span class="line">        <span class="comment">// 假设你知道一个用户的 _id (这里用一个示例，实际使用时应从数据库获取)</span></span><br><span class="line">        <span class="keyword">const</span> exampleUserId = <span class="string">&#x27;这里替换为你数据库中某个用户的实际_id字符串&#x27;</span>; <span class="comment">// !!! 替换成实际ID !!!</span></span><br><span class="line">         <span class="keyword">if</span> (exampleUserId !== <span class="string">&#x27;这里替换为你数据库中某个用户的实际_id字符串&#x27;</span>) &#123;</span><br><span class="line">             <span class="keyword">try</span> &#123;</span><br><span class="line">                 <span class="keyword">const</span> userById = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">findById</span>(exampleUserId);</span><br><span class="line">                 <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`根据ID <span class="subst">$&#123;exampleUserId&#125;</span> 查询到的用户:`</span>, userById);</span><br><span class="line">             &#125; <span class="keyword">catch</span> (findByIdErr) &#123;</span><br><span class="line">                 <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`根据ID <span class="subst">$&#123;exampleUserId&#125;</span> 查询用户失败:`</span>, findByIdErr.<span class="property">message</span>);</span><br><span class="line">             &#125;</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">             <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;未提供实际的用户ID，跳过按ID查询示例。&#x27;</span>);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 5. 链式查询：结合排序、字段选择、分页等</span></span><br><span class="line">        <span class="comment">// 查询所有用户，按 age 降序排列，只返回 name 和 email 字段</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> sortedAndSelectedUsers = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">find</span>(&#123;&#125;) <span class="comment">// 查找所有</span></span><br><span class="line">                                                    .<span class="title function_">sort</span>(&#123; <span class="attr">age</span>: -<span class="number">1</span> &#125;) <span class="comment">// 按 age 字段排序，-1 表示降序，1 表示升序</span></span><br><span class="line">                                                    .<span class="title function_">select</span>(<span class="string">&#x27;name email&#x27;</span>) <span class="comment">// 选择返回 name 和 email 字段 (_id 默认也返回)</span></span><br><span class="line">                                                    <span class="comment">// .limit(2) // 可选：限制返回文档数量为 2</span></span><br><span class="line">                                                    <span class="comment">// .skip(1) // 可选：跳过前 1 个文档 (用于分页)</span></span><br><span class="line">                                                    .<span class="title function_">exec</span>(); <span class="comment">// 执行查询 (使用 await 时 exec() 是可选的，加上更明确)</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;用户按年龄降序，只显示姓名和邮箱:&#x27;</span>, sortedAndSelectedUsers);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (chainedQueryErr) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;链式查询用户失败:&#x27;</span>, chainedQueryErr.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// === 查询数据结束 ===</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接 MongoDB 数据库失败:&#x27;</span>, err);</span><br><span class="line">        process.<span class="title function_">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 接下来的监听代码 ...</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>代码说明:</strong></p>
+<ul>
+<li>Mongoose 的查询方法（如 <code>find</code>, <code>findOne</code>, <code>findById</code>）通常都返回一个 Promise，因此可以使用 <code>await</code> 来等待查询结果。</li>
+<li><code>Model.find(queryConditions)</code>: 用于查找所有匹配 <code>queryConditions</code> 的文档。<code>queryConditions</code> 是一个对象，键值对对应字段和期望的值。你可以使用 MongoDB 的各种查询操作符（如 <code>$gt</code>, <code>$lt</code>, <code>$gte</code>, <code>$lte</code>, <code>$ne</code>, <code>$in</code>, <code>$nin</code>, <code>$regex</code> 等）在条件对象中构建更复杂的查询。</li>
+<li><code>Model.findOne(queryConditions)</code>: 与 <code>find</code> 类似，但只返回第一个匹配到的文档。如果没有任何文档匹配，返回 <code>null</code>。</li>
+<li><code>Model.findById(id)</code>: 根据文档的 <code>_id</code> 字段查找特定文档。这是 <code>findOne(&#123; _id: id &#125;)</code> 的便捷方式。</li>
+<li><strong>链式调用</strong>: Mongoose 的查询方法返回一个 Query 对象，你可以在其上链式调用其他查询辅助方法，如：<ul>
+<li><code>.sort(&#123; field: 1/-1 &#125;)</code>: 对结果进行排序。<code>1</code> 为升序，<code>-1</code> 为降序。</li>
+<li><code>.select(&#39;field1 field2 -field3&#39;)</code>: 选择要返回或排除的字段。字段名前加 <code>-</code> 表示排除该字段。<code>_id</code> 字段默认返回，除非明确排除 (<code>- _id</code>)。</li>
+<li><code>.limit(number)</code>: 限制返回文档的最大数量。</li>
+<li><code>.skip(number)</code>: 跳过指定数量的文档（常用于分页）。</li>
+<li><code>.exec()</code>: 执行链式查询。当使用 <code>await</code> 时，通常可以省略 <code>.exec()</code>，Mongoose 会自动执行。但加上它有时能让代码意图更清晰。</li>
+</ul>
+</li>
+</ul>
+<p>运行 <code>node app.js</code>，你应该能在控制台看到各种查询的结果。</p>
+<h3 id="7-本章小结与使用场景"><a href="#7-本章小结与使用场景" class="headerlink" title="7. 本章小结与使用场景"></a>7. 本章小结与使用场景</h3><p>在这一章中，我们学习了 Mongoose 的基本入门知识，包括：</p>
+<ul>
+<li>理解 Mongoose 作为 MongoDB 的 ODM 的作用。</li>
+<li>如何在 Node.js 项目中安装 Mongoose。</li>
+<li>如何连接到 MongoDB 数据库。</li>
+<li>Mongoose 的核心概念：Schema (数据结构定义)、Model (操作数据库的工具)。</li>
+<li>如何定义文档的 Schema，包括字段类型、必需性、唯一性、默认值等属性。</li>
+<li>如何使用 Model 创建并保存新的文档到数据库 (Create)。</li>
+<li>如何使用 Model 的不同方法从数据库中查询文档 (Read)，包括查询所有、按条件查询、按 ID 查询、以及使用链式方法进行排序和字段选择。</li>
+</ul>
+<p>这些基础知识是你使用 Mongoose 进行后端开发的起点。</p>
+<p><strong>基本使用场景:</strong></p>
+<ul>
+<li><strong>用户注册:</strong> 定义用户 Schema，使用 <code>User.create()</code> 保存新用户数据。</li>
+<li><strong>博客列表页:</strong> 定义文章 Schema，使用 <code>Article.find(&#123;&#125;)</code> 或 <code>Article.find(&#123; status: &#39;published&#39; &#125;)</code> 查询文章列表并显示。</li>
+<li><strong>获取用户详情:</strong> 使用 <code>User.findById(userId)</code> 根据用户ID获取用户的详细信息。</li>
+<li><strong>查找特定数据:</strong> 根据条件（如邮箱、用户名等）使用 <code>findOne</code> 或 <code>find</code> 查找符合条件的文档。</li>
+</ul>
+<h3 id="后续内容"><a href="#后续内容" class="headerlink" title="后续内容"></a>后续内容</h3><p>下一章，我们将继续学习 Mongoose 的数据更新 (Update) 和删除 (Delete) 操作，以及更深入的查询技巧和数据验证的使用。</p>
+<p>请确保你动手实践了本章的代码，这有助于你更好地理解 Mongoose 的工作方式。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">937bb</div><div class="post-copyright__author_desc">一个爱好编程的小白</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/')">MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)&amp;url=http://example.com/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/&amp;pic=/images/post/mongodb/mongodb.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">937blog</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%95%99%E7%A8%8B/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>教程<span class="tagsPageCount">12</span></a><a class="post-meta__box__tags" href="/tags/MongoDB/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>MongoDB<span class="tagsPageCount">1</span></a></div></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">🐳 构建一个完整的应用栈：实战与最佳实践指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2025/06/06/GIT%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A41/" title="GIT常用命令1 - 🧠 Git 使用教程（附公司级协作流程）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/git/git.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-06</div><div class="title">GIT常用命令1 - 🧠 Git 使用教程（附公司级协作流程）</div></div></a></div><div><a href="/2025/06/06/Linxu%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A41/" title="Linux常用命令1 - 🐧 Linux 常用命令大全（小白入门 + 日常运维）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/linux/linux.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-06</div><div class="title">Linux常用命令1 - 🐧 Linux 常用命令大全（小白入门 + 日常运维）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88services%EF%BC%89/" title="🐳 Docker Compose 字段详解篇（一）：服务配置（services）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 字段详解篇（一）：服务配置（services）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolumes%E3%80%81networks%E3%80%81configs%E3%80%81secrets/" title="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AF%87%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E8%BF%90%E8%A1%8C%E3%80%81%E7%AE%A1%E7%90%86%E5%92%8C%E5%81%9C%E6%AD%A2%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8/" title="🐳 Docker Compose 常用命令篇（三）：运行、管理和停止你的应用"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Docker Compose 常用命令篇（三）：运行、管理和停止你的应用</div></div></a></div><div><a href="/2025/06/07/Docker/Docker%20Compose%20%E6%95%99%E7%A8%8B%EF%BC%88%E5%90%AB%E5%AD%97%E6%AE%B5%E6%B3%A8%E9%87%8A%EF%BC%89/" title="🐳 Dockerfile + Docker Compose 教程（含字段注释）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-06-07</div><div class="title">🐳 Dockerfile + Docker Compose 教程（含字段注释）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)" rel="external nofollow noreferrer">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/logo.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">937bb</h1><div class="author-info__desc">一个爱好编程的小白</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="/" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="/" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>欢迎</span></div><div class="announcement_content"><span>👋🏻 Hi，我是937bb，欢迎你！</span><br> <span>❓ 如有问题欢迎评论区交流！</span><br> <span>😫 页面异常？尝试<kbd>Ctrl</kbd>+<kbd>F5</kbd></span><br> <span>📧 如需联系我：<a href="mailto:ruoms@qq.com" rel="external nofollow noreferrer"><b>发送邮件🚀</b></a></span> <div id="welcome-info"></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MongoDB-%E5%92%8C-Mongoose-%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD-%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AMongoose-%E5%9F%BA%E7%A1%80-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：Mongoose 基础 - 连接数据库与数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%90%86%E8%A7%A3-MongoDB-%E5%92%8C-Mongoose"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 理解 MongoDB 和 Mongoose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 环境准备与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%9E%E6%8E%A5%E5%88%B0-MongoDB-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 连接到 MongoDB 数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9ASchema-%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text">4. 定义数据结构：Schema (模式)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%96%B0%E5%A2%9E%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%B9%B6%E4%BF%9D%E5%AD%98%E6%96%87%E6%A1%A3-Create"><span class="toc-number">1.1.5.</span> <span class="toc-text">5. 新增数据：创建并保存文档 (Create)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%EF%BC%9A%E6%9F%A5%E6%89%BE%E6%96%87%E6%A1%A3-Read"><span class="toc-number">1.1.6.</span> <span class="toc-text">6. 查询数据：查找文档 (Read)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%9C%AC%E7%AB%A0%E5%B0%8F%E7%BB%93%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.7.</span> <span class="toc-text">7. 本章小结与使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.8.</span> <span class="toc-text">后续内容</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/" title="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/mongodb/mongodb.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)"/></a><div class="content"><a class="title" href="/2025/06/08/mongodb/MongoDB%20%E5%92%8C%20Mongoose%20%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%9E%E6%8E%A5%E3%80%81Schema%E4%B8%8ECRUD%20(%E7%AC%AC%E4%B8%80%E7%AB%A0)/" title="MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)">MongoDB 和 Mongoose 入门指南：基础连接、Schema与CRUD (第一章)</a><time datetime="2025-06-09T07:05:59.875Z" title="更新于 2025-06-09 15:05:59">2025-06-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E7%81%B5%E6%B4%BB%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E5%A4%9A%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/" title="🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理">🐳 Docker Compose 灵活配置篇（五）：环境变量与多环境管理</a><time datetime="2025-06-07T07:44:11.967Z" title="更新于 2025-06-07 15:44:11">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolumes%E3%80%81networks%E3%80%81configs%E3%80%81secrets/" title="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E5%AD%97%E6%AE%B5%E8%AF%A6%E8%A7%A3%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolumes%E3%80%81networks%E3%80%81configs%E3%80%81secrets/" title="🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）">🐳 Docker Compose 结构详解篇（二）：顶层配置（version, volumes, networks）</a><time datetime="2025-06-07T07:44:11.966Z" title="更新于 2025-06-07 15:44:11">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/06/Docker/Docker%20%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89/" title="Docker 从零开始入门教程（超详细）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker 从零开始入门教程（超详细）"/></a><div class="content"><a class="title" href="/2025/06/06/Docker/Docker%20%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89/" title="Docker 从零开始入门教程（超详细）">Docker 从零开始入门教程（超详细）</a><time datetime="2025-06-07T07:44:11.966Z" title="更新于 2025-06-07 15:44:11">2025-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/images/post/docker/docker.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战"/></a><div class="content"><a class="title" href="/2025/06/07/Docker/Docker%20Compose%20%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E7%AF%87%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E4%B8%8E%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E5%AE%9E%E6%88%98/" title="🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战">🐳 Docker Compose 进阶应用篇（四）：服务依赖与健康检查实战</a><time datetime="2025-06-07T07:44:11.965Z" title="更新于 2025-06-07 15:44:11">2025-06-07</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2025 By <a class="footer-bar-link" href="/" title="937bb" target="_blank">937bb</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener external nofollow noreferrer" href="https://beian.miit.gov.cn/" title="鲁ICP备2024128229号-1">鲁ICP备2024128229号-1</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" rel="external nofollow noreferrer" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener external nofollow noreferrer" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 总览</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/music/"><span> 音乐馆</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/album/"><span> 图库</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Docker/" style="font-size: 0.88rem;">Docker<sup>9</sup></a><a href="/tags/GIT/" style="font-size: 0.88rem;">GIT<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>1</sup></a><a href="/tags/MongoDB/" style="font-size: 0.88rem;">MongoDB<sup>1</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">教程<sup>12</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" rel="external nofollow noreferrer" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script> // 消除控制台打印
+ var HoldLog = console.log;
+ console.log = function () {};
+ let now1 = new Date();
+ queueMicrotask(() => {
+   const Log = function () {
+     HoldLog.apply(console, arguments);
+   }; //在恢复前输出日志
+   const grt = new Date("01/01/2025 00:00:00"); //此处修改你的建站时间或者网站上线时间
+   now1.setTime(now1.getTime() + 250);
+   const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+   const dnum = Math.floor(days);
+   const ascll = [
+     `欢迎使用安知鱼!`,
+     `生活明朗, 万物可爱`,
+     `
+ █████╗ ██████╗ ███████╗██████╗ ██████╗ 
+██╔══██╗╚════██╗╚════██║██╔══██╗██╔══██╗
+╚██████║ █████╔╝    ██╔╝██████╔╝██████╔╝
+ ╚═══██║ ╚═══██╗   ██╔╝ ██╔══██╗██╔══██╗
+ █████╔╝██████╔╝   ██║  ██████╔╝██████╔╝
+ ╚════╝ ╚═════╝    ╚═╝  ╚═════╝ ╚═════╝ 
+     `,
+     "已上线",
+     dnum,
+     "天",
+     //- "©2020 By 安知鱼 V1.6.14",
+   ];
+   const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+   setTimeout(
+     Log.bind(
+       console,
+       `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       "color:#425AEF",
+       "",
+       "color:#425AEF",
+       ""
+     )
+   );
+   setTimeout(
+     Log.bind(
+       console,
+       `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+       "color:white; background-color:#4fd953",
+       "",
+       "",
+       'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(
+       console,
+       //- "%c ⚡ Powered by 安知鱼 %c 你正在访问 937bb 的博客.",
+       "color:white; background-color:#f0ad4e",
+       ""
+     )
+   );
+
+   setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+   setTimeout(
+     console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+   );
+ });</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'http://101.126.93.9:8080/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'http://101.126.93.9:8080/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        const $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+        //- $dom.textContent= "暂无评论"
+        //- $dom2.textContent= "暂无评论"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml2 = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom2 = document.querySelector('#card-console-newest-comments .aside-list')
+    $dom2 && ($dom2.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom2)
+  }
+
+    const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a  href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `          
+        <a  class="rightc"  href='${array[i].url}' title='${array[i].content}'>
+        <div class='comment'>
+          <div class='title'>${array[i].content}</div>
+          <div class='userName'>${array[i].nick} - ${anzhiyu.diffDate(array[i].date, true)}</time></div>
+          </div>
+
+        </a>
+        </div>`
+      }
+
+        //- <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time>
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+    if (document.querySelector('#card-console-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml2(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
