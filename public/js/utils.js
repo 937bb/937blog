@@ -1136,7 +1136,7 @@ const anzhiyu = {
 				height: 250,
 				colorDark: "#000",
 				colorLight: "#ffffff",
-				correctLevel: QRCode.CorrectLevel.H,
+				correctLevel: QRCode.CorrectLevel.L,
 			});
 		}
 	},
