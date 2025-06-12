@@ -365,7 +365,7 @@ waline:
 # Twikoo
 # https://github.com/imaegoo/twikoo
 twikoo:
-  envId: http://101.126.93.9:8080/
+  envId: twikoo.937b.cn
   region:
   visitor: true
   option:
