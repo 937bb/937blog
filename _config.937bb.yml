@@ -619,17 +619,17 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#00adb5"
-  dark_main: "#00adb5"
-  paginator: "#00adb5"
+  main: "#0abab5"
+  dark_main: "#0abab5"
+  paginator: "#0abab5"
   button_hover: "paginator"
   text_selection: "#2128bd"
   link_color: "var(--anzhiyu-fontcolor)"
   meta_color: "var(--anzhiyu-fontcolor)"
   hr_color: "#4259ef"
-  code_foreground: "#00adb5" # 代码块文字颜色
+  code_foreground: "#0abab5" # 代码块文字颜色
   dark_foreground: "#fff" # 暗主题 代码块文字颜色
-  code_background: "color-mix(in oklab,#00adb5 20%,transparent)" # 代码块背景
+  code_background: "color-mix(in oklab,#0abab5 20%,transparent)" # 代码块背景
   dark_code_background: "#080808" # 暗主题 代码块背景
 
   toc_color: "#425AEF"
@@ -814,7 +814,8 @@ aside:
     category: true
   card_author:
     enable: true
-    description: <div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">产品、设计、开发</b>相关的问题和看法，还有<b style="color:#fff">文章翻译</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div>
+    description: <div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">开发、运维等教程</b>相关的问题和看法，还有<b style="color:#fff">文章推荐</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">多数文章是对自己的查缺补漏并拓展知识的总结（结合AI工具生成），希望能够对你有帮助。</div>
+
     name_link: /about
   card_newest_comments:
     enable: true
@@ -965,7 +966,7 @@ fancybox: true
 # mermaid
 # see https://github.com/mermaid-js/mermaid
 mermaid:
-  enable: false
+  enable: true
   # built-in themes: default/forest/dark/neutral
   theme:
     light: default

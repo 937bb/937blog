@@ -1,9 +1,7 @@
 ---
 title: Redis 系列教程 | 第 2 章：Redis 常用数据类型详解
-description: "\U0001F680 本系列博客将带你从 0 到 1 掌握 Redis，包括它的原理、使用方法、最佳实践等，适合初学者和想要深入理解 Redis 的开发者。"
-keywords: >-
-  本系列博客将带你从 0 到 1 掌握 Redis，包括它的原理、使用方法、最佳实践等，适合初学者和想要深入理解 Redis 的开发者。Redis 系列教程
-  | 第 2 章：Redis 常用数据类型详解
+description: \U0001F680 本系列博客将带你从 0 到 1 掌握 Redis，包括它的原理、使用方法、最佳实践等，适合初学者和想要深入理解 Redis 的开发者。
+keywords:   本系列博客将带你从 0 到 1 掌握 Redis，包括它的原理、使用方法、最佳实践等，适合初学者和想要深入理解 Redis 的开发者。Redis 系列教程  | 第 2 章：Redis 常用数据类型详解
 top_img: /images/post/redis/redis.png
 cover: /images/post/redis/redis.png
 categories:

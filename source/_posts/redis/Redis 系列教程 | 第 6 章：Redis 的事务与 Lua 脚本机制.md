@@ -1,7 +1,6 @@
 ---
 title: Redis 系列教程 | 第 6 章：Redis 的事务与 Lua 脚本机制
-description: >-
-  Redis 的事务机制提供了一种原子执行多个命令的方法，而 Lua 脚本则是提升 Redis
+description:   Redis 的事务机制提供了一种原子执行多个命令的方法，而 Lua 脚本则是提升 Redis
   原子性与扩展能力的强大武器。本章用白话+实战+故事形式，深入剖析事务与脚本在实际业务中的作用。
 keywords: 'Redis 事务, Redis Lua 脚本, Redis 原子性, Redis 脚本执行, Redis 教程'
 top_img: /images/post/redis/redis.png

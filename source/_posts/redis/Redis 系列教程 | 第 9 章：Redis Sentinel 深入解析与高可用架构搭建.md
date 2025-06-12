@@ -1,9 +1,8 @@
 ---
 title: Redis 系列教程 | 第 9 章：Redis Sentinel 深入解析与高可用架构搭建
-description: >-
-  本章用通俗易懂的语言，详细讲解 Redis Sentinel 的工作原理、使用场景及高可用架构搭建，配合实战 Demo 和流程图，助你轻松掌握 Redis
+description: 本章用通俗易懂的语言，详细讲解 Redis Sentinel 的工作原理、使用场景及高可用架构搭建，配合实战 Demo 和流程图，助你轻松掌握 Redis
   高可用保障。
-keywords: 'Redis Sentinel, Redis 高可用, 哨兵机制, Redis 容错, Redis 故障转移, Redis 教程'
+keywords: Redis Sentinel, Redis 高可用, 哨兵机制, Redis 容错, Redis 故障转移, Redis 教程
 top_img: /images/post/redis/redis.png
 cover: /images/post/redis/redis.png
 categories:
@@ -11,7 +10,7 @@ categories:
 tags:
   - 教程
   - Redis
-date: '2025-06-11 18:32'
+date: 2025-06-11 18:32
 abbrlink: 46923
 ---
 
@@ -67,11 +66,11 @@ Sentinel 不是单独工作的，它们**一般会部署多个实例**（比如 
 
 ## 五、Redis Sentinel 使用场景
 
-| 场景                         | 说明                           |
-|------------------------------|--------------------------------|
-| 高可用 Redis 缓存集群         | 主节点故障自动切换，保障服务稳定 |
-| 会话存储需要持续访问保障       | 避免单点故障导致数据访问中断   |
-| 分布式系统中的缓存和消息中间件 | 实现无缝故障转移               |
+| 场景                           | 说明                             |
+| ------------------------------ | -------------------------------- |
+| 高可用 Redis 缓存集群          | 主节点故障自动切换，保障服务稳定 |
+| 会话存储需要持续访问保障       | 避免单点故障导致数据访问中断     |
+| 分布式系统中的缓存和消息中间件 | 实现无缝故障转移                 |
 
 ---
 

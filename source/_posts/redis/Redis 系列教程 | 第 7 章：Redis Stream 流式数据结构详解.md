@@ -1,7 +1,6 @@
 ---
 title: Redis 系列教程 | 第 7 章：Redis Stream 流式数据结构详解
-description: >-
-  Redis Stream 是 Redis 提供的流式数据结构，适用于订单处理、日志收集、传感器数据等场景。本章通过生活化小故事、图示和 demo
+description: Redis Stream 是 Redis 提供的流式数据结构，适用于订单处理、日志收集、传感器数据等场景。本章通过生活化小故事、图示和 demo
   演示，让你轻松掌握 Stream 用法。
 keywords: 'Redis Stream, Redis 流结构, 消息队列, 实时流处理, Redis 教程'
 top_img: /images/post/redis/redis.png
@@ -11,7 +10,7 @@ categories:
 tags:
   - 教程
   - Redis
-date: '2025-06-11 18:30'
+date: 2025-06-11 18:30
 abbrlink: 49451
 ---
 
@@ -43,9 +42,9 @@ XADD mystream * event "下单" user "937bb"
 
 这就代表这条消息被记录为：
 
-| ID              | event | user |
-| --------------- | ----- | ---- |
-| 1626337440000-0 | 下单    | 937bb   |
+| ID              | event | user  |
+| --------------- | ----- | ----- |
+| 1626337440000-0 | 下单  | 937bb |
 
 ### 2. 浏览全部消息：`XRANGE`
 

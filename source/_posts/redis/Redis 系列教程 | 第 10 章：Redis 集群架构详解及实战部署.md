@@ -1,7 +1,7 @@
 ---
 title: Redis 系列教程 | 第 10 章：Redis 集群架构详解及实战部署
-description: "\U0001F680 本章通过白话文深入讲解 Redis 集群原理及其与主从复制、哨兵机制的关系，附带 Docker Compose 实战部署示例和多语言客户端访问演示。"
-keywords: 'Redis Cluster, Redis 集群部署, Redis 高可用, Redis 槽位, Redis 实战部署, 主从复制, 哨兵'
+description: \U0001F680 本章通过白话文深入讲解 Redis 集群原理及其与主从复制、哨兵机制的关系，附带 Docker Compose 实战部署示例和多语言客户端访问演示。
+keywords: Redis Cluster, Redis 集群部署, Redis 高可用, Redis 槽位, Redis 实战部署, 主从复制, 哨兵
 top_img: /images/post/redis/redis.png
 cover: /images/post/redis/redis.png
 categories:
@@ -9,7 +9,7 @@ categories:
 tags:
   - 教程
   - Redis
-date: '2025-06-11 18:33'
+date: 2025-06-11 18:33
 abbrlink: 19012
 ---
 
@@ -43,7 +43,7 @@ Redis Cluster 是官方提供的**分布式部署方案**，具备以下特性�
 
 ## 三、Redis 集群架构图
 
-![Redis Cluster 架构图](https://img-blog.csdnimg.cn/20210407155230867.png)
+![Redis Cluster 架构图](/images/post/redis/cluster.png)
 
 - **主节点负责存数据**
 - **每个主节点配一个从节点**

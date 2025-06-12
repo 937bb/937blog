@@ -1,7 +1,6 @@
 ---
 title: Redis 系列教程 | 第 5 章：深入理解 Redis 的过期键与淘汰策略
-description: >-
-  Redis 的过期键机制和内存淘汰策略，是保障高性能与内存可控的关键机制。本章将以图文+代码形式，深入剖析 Redis
+description: Redis 的过期键机制和内存淘汰策略，是保障高性能与内存可控的关键机制。本章将以图文+代码形式，深入剖析 Redis
   如何设置过期时间、如何清理数据、以及何时触发淘汰。
 keywords: 'Redis 过期键, Redis 淘汰策略, Redis 内存管理, Redis 教程, Redis 内存清理机制'
 top_img: /images/post/redis/redis.png

@@ -1,7 +1,7 @@
 ---
 title: Redis 系列教程 | 第 8 章：Redis 主从复制与高可用架构实战
-description: "\U0001F680 本章详细介绍 Redis 主从复制的原理、配置方法以及高可用架构设计，辅以多语言客户端示例，助你构建稳定可靠的 Redis 集群。"
-keywords: 'Redis 主从复制, Redis 高可用, Redis 集群, Redis 复制配置, Redis 多语言示例'
+description: \U0001F680 本章详细介绍 Redis 主从复制的原理、配置方法以及高可用架构设计，辅以多语言客户端示例，助你构建稳定可靠的 Redis 集群。
+keywords: Redis 主从复制, Redis 高可用, Redis 集群, Redis 复制配置, Redis 多语言示例
 top_img: /images/post/redis/redis.png
 cover: /images/post/redis/redis.png
 categories:
@@ -9,7 +9,7 @@ categories:
 tags:
   - 教程
   - Redis
-date: '2025-06-11 18:31'
+date: 2025-06-11 18:31
 abbrlink: 37357
 ---
 

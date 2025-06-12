@@ -1,7 +1,7 @@
 ---
 title: Redis 系列教程 | 第 4 章：Redis 发布订阅机制详解
-description: "\U0001F680 本章深入解析 Redis 发布订阅（Pub/Sub）机制，包括应用场景、命令使用与消息流程，助你构建实时通信服务。"
-keywords: 'Redis 发布订阅, Pub/Sub 机制, 消息系统, 实时通信, Redis 教程'
+description: \U0001F680 本章深入解析 Redis 发布订阅（Pub/Sub）机制，包括应用场景、命令使用与消息流程，助你构建实时通信服务。
+keywords: Redis 发布订阅, Pub/Sub 机制, 消息系统, 实时通信, Redis 教程
 top_img: /images/post/redis/redis.png
 cover: /images/post/redis/redis.png
 categories:

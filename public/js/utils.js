@@ -1513,7 +1513,7 @@ const bb937 = {
 		};
 
 		const generateWelcomeMessage = (pos, dist, ipDisplay, country, prov, city) => `
-    欢迎来自 <b>${pos}</b> 的小友💖<br>
+    欢迎来自 <b>${pos}</b> 的朋友<br>
     你当前距博主约 <b>${dist}</b> 公里！<br>
     你的IP地址：<b class="ip-address">${ipDisplay}</b><br>
     ${getTimeGreeting()}<br>
