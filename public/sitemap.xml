@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/albumDetail/wordScenery/index.html</loc>
+    <loc>http://example.com/albumDetail/dailyPhoto/index.html</loc>
     
     <lastmod>2025-06-09</lastmod>
     
@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/albumDetail/dailyPhoto/index.html</loc>
+    <loc>http://example.com/albumDetail/wordScenery/index.html</loc>
     
     <lastmod>2025-06-09</lastmod>
     
@@ -281,7 +281,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%95%99%E7%A8%8B%EF%BC%88%E5%90%AB%E5%AD%97%E6%AE%B5%E6%B3%A8%E9%87%8A%EF%BC%89/</loc>
+    <loc>http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/</loc>
     
     <lastmod>2025-06-07</lastmod>
     
@@ -290,7 +290,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%B7%B1%E5%85%A5%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E7%AF%87%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/</loc>
+    <loc>http://example.com/2025/06/07/Docker/Docker%20Compose%20%E6%95%99%E7%A8%8B%EF%BC%88%E5%90%AB%E5%AD%97%E6%AE%B5%E6%B3%A8%E9%87%8A%EF%BC%89/</loc>
     
     <lastmod>2025-06-07</lastmod>
     
