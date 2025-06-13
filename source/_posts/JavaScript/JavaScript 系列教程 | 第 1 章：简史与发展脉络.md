@@ -1,5 +1,5 @@
 ---
-title: JavaScript ES 系列教程 | 第 1 章：ECMAScript 简史与发展脉络
+title: JavaScript 系列教程 | 第 1 章：ECMAScript 简史与发展脉络
 description: "\U0001F44B 从混乱走向标准化，JavaScript 的进化之路。了解 ECMAScript 的前世今生，奠定学习现代 JavaScript 的基础。"
 keywords: 'ECMAScript 简史, JavaScript ES 历史, TC39 流程, JavaScript 演进, JavaScript 学习'
 top_img: /images/post/js/JavaScript.avif

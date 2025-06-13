@@ -1,5 +1,5 @@
 ---
-title: JavaScript ES 系列教程 | 第 4 章：对象与数组的增强语法（解构）
+title: JavaScript 系列教程 | 第 4 章：对象与数组的增强语法（解构）
 description: 本章讲解 ES6+ 中对象与数组的常见增强写法，如解构赋值、扩展运算符、Symbol 等，带你写出更优雅的 JavaScript 代码。
 keywords: '解构赋值, 扩展运算符, Symbol, 对象简写, 计算属性名, JavaScript 教程'
 top_img: /images/post/js/JavaScript.avif

@@ -1,5 +1,5 @@
 ---
-title: JavaScript ES 系列教程 | 第 2 章：变量与作用域深入讲解
+title: JavaScript 系列教程 | 第 2 章：变量与作用域深入讲解
 description: "\U0001F50D 搞懂 let、const、var 的区别，理解作用域、提升与暂时性死区（TDZ），掌握 JS 中变量背后的运行机制。"
 keywords: 'JavaScript 变量, let const var 区别, 作用域, 变量提升, TDZ'
 top_img: /images/post/js/JavaScript.avif
