@@ -326,7 +326,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/albumDetail/dailyPhoto/index.html</loc>
+    <loc>http://example.com/albumDetail/wordScenery/index.html</loc>
     
     <lastmod>2025-06-09</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/albumDetail/wordScenery/index.html</loc>
+    <loc>http://example.com/albumDetail/dailyPhoto/index.html</loc>
     
     <lastmod>2025-06-09</lastmod>
     
@@ -534,6 +534,13 @@
   </url>
   
   <url>
+    <loc>http://example.com/tags/ECMAScript/</loc>
+    <lastmod>2025-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/tags/JavaScript/</loc>
     <lastmod>2025-06-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -542,13 +549,6 @@
   
   <url>
     <loc>http://example.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2025-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/tags/ECMAScript/</loc>
     <lastmod>2025-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
