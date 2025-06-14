@@ -1,4 +1,4 @@
-- title: 瞬间
+- title: 瞬间所感
   subTitle: 全干实习中。
   tips: 希望在新的一年继续呜呼起飞
   buttonText: 关于我
@@ -7,5 +7,7 @@
   home_essay: true
   top_background: /images/bg/pexels1.jpg
   essay_list:
-    - content: 站点创建成功
+    - content: 花有重开日，人无再少年
+      date: 2025/06/14
+    - content: 站点创建成功，欢迎交换友链
       date: 2025/01/01
