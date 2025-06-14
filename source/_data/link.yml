@@ -7,23 +7,22 @@
       avatar: /images/logo.jpg
       descr: 让自己简单点
       siteshot: /images/logo.jpg
-    - name: Hexo
-      link: https://hexo.io/zh-tw/
-      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
-      descr: 快速、简单且强大的网站框架
-      siteshot: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+    - name: Mortal红尘 # 昵称
+      desc: 积跬步以至千里，致敬每个爱学习的你。 # 介绍
+      avatar: https://mortal-blogs.vercel.app/img/EB-logo.png # 头像
+      link: https://mortal-blogs.vercel.app/ # 链接
 
-- class_name: 推荐博客
-  flink_style: telescopic
-  hundredSuffix: ""
-  link_list:
-    - name: Hexo
-      link: https://hexo.io/zh-tw/
-      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
-      descr: 快速、简单且强大的网站框架
-      siteshot: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
-      color: vip
-      tag: 技术
+# - class_name: 推荐博客
+#   flink_style: telescopic
+#   hundredSuffix: ""
+#   link_list:
+#     - name: Hexo
+#       link: https://hexo.io/zh-tw/
+#       avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+#       descr: 快速、简单且强大的网站框架
+#       siteshot: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+#       color: vip
+#       tag: 技术
 
 - class_name: 小伙伴
   class_desc: 那些人，那些事

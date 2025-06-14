@@ -241,7 +241,7 @@ showUserPosts();
 
 ---
 
-## 九、推荐阅读 & 参考资料（可在大陆访问）
+## 九、推荐阅读 & 参考资料
 
 * 📘 [阮一峰的网络日志 - JavaScript 异步编程](https://www.ruanyifeng.com/blog/2015/05/async.html)
 * 📗 [MDN - Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
