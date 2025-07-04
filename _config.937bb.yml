@@ -25,19 +25,17 @@ menu:
 
 # nav相关配置
 nav:
-  enable: false
+  enable: true
   travelling: false
   clock: false
   menu:
-    - title: 网页
-      item:
-        - name: 博客
-          link: https://blog.anheyu.com/
-          icon: /images/logo.jpg
     - title: 项目
       item:
-        - name: 安知鱼图床
-          link: https://image.anheyu.com/
+        - name: 公益API
+          link: https://webapi.937b.cn/
+          icon: /images/logo.jpg
+        - name: 服务器探针(开发中)
+          link: https://blog.937b.cn/
           icon: /images/logo.jpg
 
 # mourn （哀悼日，指定日期网站简单变灰，不包括滚动条）
